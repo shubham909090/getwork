@@ -14,5 +14,66 @@ datasource db {
 }
 
 model User {
-  id Int @unique() @default(autoincrement())
+  id Int @id @default(autoincrement()) 
+  name String 
+  email String @unique
+  password String
+  authToken String?
+  crated DateTime @default(now())
+  applications Application[]
+}
+model Seller {
+  id         Int      @id @default(autoincrement())
+  email      String   @unique
+  password   String
+  authToken  String?
+  createdAt  DateTime @default(now())
+  jobs Job[]
+}
+
+
+model Job {
+  id          Int            @id @default(autoincrement())
+  title       String
+  description String
+  status      String         @default("open")
+  createdAt   DateTime       @default(now())
+
+  // Relationships
+  sellerId    Int
+  seller      Seller         @relation(fields: [sellerId], references: [id])
+
+  applications Application[] // A job can have multiple applications
+
+  categories  JobCategory[]
+}
+
+
+model Category {
+  id       Int      @id @default(autoincrement())
+  name     String   @unique
+  jobs     JobCategory[]
+}
+
+
+model JobCategory {
+  jobId       Int
+  job         Job       @relation(fields: [jobId], references: [id])
+
+  categoryId  Int
+  category    Category  @relation(fields: [categoryId], references: [id])
+
+  @@id([jobId, categoryId])
+}
+
+model Application {
+  id         Int        @id @default(autoincrement())
+  appliedAt  DateTime   @default(now())
+
+  // Relationships
+  jobId      Int
+  job        Job        @relation(fields: [jobId], references: [id])
+
+  userId     Int        @unique
+  user       User       @relation(fields: [userId], references: [id])
 }
