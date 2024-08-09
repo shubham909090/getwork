@@ -11,8 +11,9 @@ export const catIListatom = atom<number>({
 
 const listatom = atom<Category[]>({
   key: "listatom",
-  default: [],
+  default: undefined,
 });
+
 
 export const Checkbox = () => {
   const [catIdList, setCatIdList] = useRecoilStateLoadable(catIListatom);
@@ -33,8 +34,8 @@ export const Checkbox = () => {
   };
   
 
-  if (list.state === "loading") {
-    return <div className=" bg-black">Loading...</div>;
+  if (list.state === "loading" || list.contents === undefined) {
+    return <div className=" bg-slate-600 text-white">Loading...</div>;
   }
 
   if (list.state === "hasError") {

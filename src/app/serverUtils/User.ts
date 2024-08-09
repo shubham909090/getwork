@@ -35,23 +35,6 @@ export async function getJobWithCategory(arg:number) {
         },
       },
     });
-    // ({
-    //     where: {
-    //       categories: {
-    //         some: {
-    //           category: {
-    //             name: {
-    //               contains: "tech", // Adjust to equals for exact match
-    //             },
-    //           },
-    //         },
-    //       },
-    //     },
-    //     include: {
-    //       categories: true, // Include category information for each job
-    //     },
-    //   });
-
       return jobs;
     }
 
