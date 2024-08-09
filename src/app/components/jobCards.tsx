@@ -2,12 +2,8 @@
 
 import { useEffect } from "react"
 import {getJobWithCategory} from "../serverUtils/User"
-import { atom, useRecoilStateLoadable, useRecoilValueLoadable, useSetRecoilState } from "recoil"
+import { atom, selector, useRecoilStateLoadable, useRecoilValueLoadable, useSetRecoilState } from "recoil"
 import {catIListatom} from './checkBox'
-
-
-
-
 
 const cardsAtom = atom<{
     id: number;
@@ -21,22 +17,47 @@ const cardsAtom = atom<{
     }[];
 }[]>({
     key:"cardsAtom",
-    default:[]
+    default:undefined
 })
-export default function JobCards() {
- const state= useRecoilValueLoadable(catIListatom)
- const [cards , setCards] = useRecoilStateLoadable(cardsAtom)
-    useEffect(()=>{
-        async function name() {
-            const res = await getJobWithCategory(state.contents)
-            setCards(res)
 
-        }
-        name()
-    },[state])
+
+const listSelector = selector<{
+    id: number;
+    title: string;
+    description: string;
+    categories: {
+        category: {
+            id: number;
+            name: string;
+        };
+    }[];
+}[]>({
+    key: "listSelector",
+    get: async ({get}) => {
+        const value = get(catIListatom)
+      const res = await getJobWithCategory(value); // Fetch data from server
+      return res;
+    },
+  });
+
+export default function JobCards() {
+//  const [cards , setCards] = useRecoilStateLoadable(cardsAtom)
+const cards = useRecoilValueLoadable(listSelector)
+
+
+  
+
+    // useEffect(()=>{
+    //     async function name() {
+    //         const res = await getJobWithCategory(state.contents)
+    //         setCards(res)
+
+    //     }
+    //     name()
+    // },[state])
 
     if (cards.state === "loading") {
-        return <div className=" bg-black">Loading...</div>;
+        return <div className=" bg-black text-white">Loading...</div>;
       }
     
       if (cards.state === "hasError") {
