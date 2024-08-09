@@ -3,13 +3,6 @@
 
 import prisma from "../db";
 
-
-
-export async function createUser(){
-
-}
-
-
 export async function getJobWithCategory(arg:number) {
 
     const jobs = await prisma.job.findMany( {where: {

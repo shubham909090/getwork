@@ -21,7 +21,7 @@ const cardsAtom = atom<{
 })
 
 
-const listSelector = selector<{
+const cardsSelector = selector<{
     id: number;
     title: string;
     description: string;
@@ -32,7 +32,7 @@ const listSelector = selector<{
         };
     }[];
 }[]>({
-    key: "listSelector",
+    key: "cardsSelector",
     get: async ({get}) => {
         const value = get(catIListatom)
       const res = await getJobWithCategory(value); // Fetch data from server
@@ -42,7 +42,7 @@ const listSelector = selector<{
 
 export default function JobCards() {
 //  const [cards , setCards] = useRecoilStateLoadable(cardsAtom)
-const cards = useRecoilValueLoadable(listSelector)
+const cards = useRecoilValueLoadable(cardsSelector)
 
 
   
