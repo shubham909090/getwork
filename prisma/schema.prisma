@@ -18,25 +18,28 @@ model User {
   name String 
   email String @unique
   password String
+  role Role @default(USER)
   authToken String?
   crated DateTime @default(now())
   applications Application[]
 }
 model Seller {
   id         Int      @id @default(autoincrement())
+  name       String
   email      String   @unique
   password   String
+  role       Role     @default(SELLER)
   authToken  String?
   createdAt  DateTime @default(now())
   jobs Job[]
 }
 
 
+
 model Job {
   id          Int            @id @default(autoincrement())
   title       String
   description String
-  status      String         @default("open")
   createdAt   DateTime       @default(now())
 
   // Relationships
@@ -69,6 +72,7 @@ model JobCategory {
 model Application {
   id         Int        @id @default(autoincrement())
   appliedAt  DateTime   @default(now())
+  status     Status     @default(OPEN)
 
   // Relationships
   jobId      Int
@@ -76,4 +80,14 @@ model Application {
 
   userId     Int        @unique
   user       User       @relation(fields: [userId], references: [id])
+}
+
+enum Role {
+  USER
+  SELLER
+}
+enum Status {
+  OPEN
+  PENDING
+  CLOSED
 }
