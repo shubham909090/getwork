@@ -1,26 +1,11 @@
 "use client"
 
-import { useEffect } from "react"
+
 import {getJobWithCategory} from "../serverUtils/User"
 import { atom, selector, useRecoilStateLoadable, useRecoilValueLoadable, useSetRecoilState } from "recoil"
-import {catIListatom} from './checkBox'
+import { catIListatom } from "../serverUtils/state";
 
-const cardsAtom = atom<{
-    id: number;
-    title: string;
-    description: string;
-    categories: {
-        category: {
-            id: number;
-            name: string;
-        };
-    }[];
-}[]>({
-    key:"cardsAtom",
-    default:undefined
-})
-
-
+// fetches data deom server about available jobs in database (all rn no pagination) with all the categories it belongs to.
 const cardsSelector = selector<{
     id: number;
     title: string;
@@ -30,31 +15,18 @@ const cardsSelector = selector<{
             id: number;
             name: string;
         };
-    }[];
-}[]>({
+    }[];}[]>({
     key: "cardsSelector",
     get: async ({get}) => {
         const value = get(catIListatom)
-      const res = await getJobWithCategory(value); // Fetch data from server
+      const res = await getJobWithCategory(value); 
       return res;
-    },
-  });
+    },});
 
 export default function JobCards() {
-//  const [cards , setCards] = useRecoilStateLoadable(cardsAtom)
+
 const cards = useRecoilValueLoadable(cardsSelector)
 
-
-  
-
-    // useEffect(()=>{
-    //     async function name() {
-    //         const res = await getJobWithCategory(state.contents)
-    //         setCards(res)
-
-    //     }
-    //     name()
-    // },[state])
 
     if (cards.state === "loading") {
         return <div className=" bg-black text-white">Loading...</div>;
