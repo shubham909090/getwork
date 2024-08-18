@@ -1,39 +1,22 @@
 "use client"
 import { atom, useRecoilStateLoadable, useRecoilState, selector, useRecoilValueLoadable } from "recoil";
 import { Category } from "@prisma/client";
-import { useEffect } from "react";
 import { getAllCategories } from "../serverUtils/cat";
+import { catIListatom } from "../serverUtils/state";
 
-export const catIListatom = atom<number>({
-  key: "catIListatom",
-  default: undefined,
-});
-
-// const listatom = atom<Category[]>({
-//   key: "listatom",
-//   default: undefined,
-// });
-
+// fetches data from server about category name and it's id.
 const listSelector = selector<Category[]>({
   key: "listSelector",
   get: async () => {
-    const res = await getAllCategories(); // Fetch data from server
-    return res // Ensure it's always an array
+    const res = await getAllCategories(); 
+    return res
   },
 });
 
 export const Checkbox = () => {
-  const [catIdList, setCatIdList] = useRecoilStateLoadable(catIListatom);
-  // const [list, setList] = useRecoilStateLoadable(listatom);
-  const list = useRecoilValueLoadable(listSelector)
 
-  // useEffect(() => {
-  //   async function loadeCatIds() {
-  //     const res = await getAllCategories();
-  //     setList(res);
-  //   }
-  //   loadeCatIds();
-  // }, []);
+  const [catIdList, setCatIdList] = useRecoilStateLoadable(catIListatom);
+  const list = useRecoilValueLoadable(listSelector)
 
   const handleChange = (id: number) => {
     if (catIdList.state === "hasValue") {
@@ -61,3 +44,5 @@ export const Checkbox = () => {
 
   
   };
+
+
