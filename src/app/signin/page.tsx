@@ -13,7 +13,7 @@ export default function Signin(){
 
     const handleClick = async()=>{
 
-       const res = await getJobWithCategory()
+       const res = await getJobWithCategory(1)
         console.log(JSON.stringify(res))
     }
 

@@ -4,7 +4,9 @@
 import prisma from "../db";
 
 export async function getJobWithCategory(arg:number) {
-
+// if (arg === undefined){
+//   return {}
+// }
     const jobs = await prisma.job.findMany( {where: {
         categories: {
           some: {
