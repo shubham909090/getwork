@@ -3,7 +3,7 @@
 import {
     Card
   } from "@/components/ui/card"
-import CategoryButtons from "../components/categorybuttonsShad"
+import CategoryButtons from "./categorybuttonsShad"
 import { Button } from "@/components/ui/button"
 import {  X } from "lucide-react"
 

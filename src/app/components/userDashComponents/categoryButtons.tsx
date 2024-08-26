@@ -1,6 +1,6 @@
 "use client"
 import {useRecoilStateLoadable, useRecoilValueLoadable } from "recoil";
-import { catIListatom, listSelector } from "../serverUtils/state";
+import { catIListatom, listSelector } from "../../serverUtils/state";
 
 // fetches data from server about category name and it's id.
 

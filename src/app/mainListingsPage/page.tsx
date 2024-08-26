@@ -1,7 +1,7 @@
-import CategoryButtonsShad from "../components/categorybuttonsShad";
-import JobListings from "../components/jobListings";
-import SelectedJob from "../components/selectedJob";
-import SlectedCategoryButtons from "../components/slectedCategoryButtons";
+import CategoryButtonsShad from "../components/userDashComponents/categorybuttonsShad";
+import JobListings from "../components/userDashComponents/jobListings";
+import SelectedJob from "../components/userDashComponents/selectedJob";
+import SlectedCategoryButtons from "../components/userDashComponents/slectedCategoryButtons";
 
 export default function App(){
 
