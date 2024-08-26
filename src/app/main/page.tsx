@@ -1,7 +1,7 @@
 "use client" 
 import { RecoilRoot } from "recoil";
-import { CategoryButtons } from "../components/categoryButtons";
-import JobCards from "../components/jobCards"
+import { CategoryButtons } from "../components/userDashComponents/categoryButtons";
+import JobCards from "../components/userDashComponents/jobCards"
 import React from "react";
 
 

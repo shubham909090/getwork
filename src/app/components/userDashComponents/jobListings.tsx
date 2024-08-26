@@ -13,6 +13,7 @@ import {
 } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { SlectedJobDrower } from "./slectedJobDrower"
+import { Pin } from "lucide-react"
 
 
   export  default function JobListings() {
@@ -20,9 +21,13 @@ import { SlectedJobDrower } from "./slectedJobDrower"
 
   return (
     <>
-            <Card className=" p-5 bg-orange-500 min-w-[366px]">
+            <Card className=" p-5 min-w-[366px]">
                 <CardHeader>
-                    <CardTitle>Create project</CardTitle>
+                    <div className=" flex justify-between">
+                        <CardTitle>Create project</CardTitle>
+                        <Pin color="#2e2929" />
+                    </div>
+                    
                     <CardDescription>Deploy your new project in one-click.</CardDescription>
                 </CardHeader>
                 <CardContent>
@@ -35,6 +40,7 @@ import { SlectedJobDrower } from "./slectedJobDrower"
                 <Button className=" hidden md:block" variant={"destructive" }>Open</Button>
 
                     <div className=" flex gap-2">
+                        
                         <Badge>Badge</Badge>
                         <Badge>Badge</Badge>
                         <Badge>Badge</Badge>
