@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import React from 'react'
 
 export default function Component() {
   const [step, setStep] = useState(1)
@@ -29,7 +30,7 @@ export default function Component() {
     switch(step) {
       case 1:
         return (
-            <>
+          <>
             <CardHeader>
               <CardTitle>Step 1: Personal Information</CardTitle>
               <CardDescription>Let's start with your basic details</CardDescription>
@@ -141,8 +142,7 @@ export default function Component() {
   }
 
   return (
-  
-  <div className=' flex flex-col items-center justify-center h-screen'>
+    <div className=' flex flex-col items-center justify-center h-screen'>
     <Card className=" w-fit">
         {renderStep()}
         <CardFooter className="flex justify-between">
@@ -153,6 +153,5 @@ export default function Component() {
         </CardFooter>
         </Card>
   </div>
-   
   )
 }

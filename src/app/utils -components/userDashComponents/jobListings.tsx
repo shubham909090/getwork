@@ -2,7 +2,7 @@
 
 import * as React from "react"
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/app/ui/button"
 import {
   Card,
   CardContent,
@@ -10,8 +10,8 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
+} from "@/app/ui/card"
+import { Badge } from "@/app/ui/badge"
 import { SlectedJobDrower } from "./slectedJobDrower"
 import { Pin } from "lucide-react"
 
@@ -21,7 +21,77 @@ import { Pin } from "lucide-react"
 
   return (
     <>
-            <Card className=" p-5 min-w-[366px]">
+            <Card className=" p-5 min-w-[366px]  mb-5">
+                <CardHeader>
+                    <div className=" flex justify-between">
+                        <CardTitle>Create project</CardTitle>
+                        <Pin color="#2e2929" />
+                    </div>
+                    
+                    <CardDescription>Deploy your new project in one-click.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                 
+                </CardContent>
+                <CardFooter className="flex justify-between">
+
+                <SlectedJobDrower /> {/* for non mobile devices */}
+
+                <Button className=" hidden md:block" variant={"destructive" }>Open</Button>
+
+                    <div className=" flex gap-2">
+                        
+                        <Badge>Badge</Badge>
+                        <Badge>Badge</Badge>
+                        <Badge>Badge</Badge>
+                    </div>
+                </CardFooter>
+           
+            </Card>
+
+
+
+
+
+            
+            <Card className=" p-5 min-w-[366px]  mb-5">
+                <CardHeader>
+                    <div className=" flex justify-between">
+                        <CardTitle>Create project</CardTitle>
+                        <Pin color="#2e2929" />
+                    </div>
+                    
+                    <CardDescription>Deploy your new project in one-click.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                 
+                </CardContent>
+                <CardFooter className="flex justify-between">
+
+                <SlectedJobDrower /> {/* for non mobile devices */}
+
+                <Button className=" hidden md:block" variant={"destructive" }>Open</Button>
+
+                    <div className=" flex gap-2">
+                        
+                        <Badge>Badge</Badge>
+                        <Badge>Badge</Badge>
+                        <Badge>Badge</Badge>
+                    </div>
+                </CardFooter>
+           
+            </Card>
+
+
+
+
+
+
+
+
+
+            
+            <Card className=" p-5 min-w-[366px] mb-5">
                 <CardHeader>
                     <div className=" flex justify-between">
                         <CardTitle>Create project</CardTitle>
@@ -51,58 +121,6 @@ import { Pin } from "lucide-react"
             
 
 
-
-
-            <Card className=" p-5 bg-orange-500 min-w-[366px]">
-                <CardHeader>
-                    <CardTitle>Create project</CardTitle>
-                    <CardDescription>Deploy your new project in one-click.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                 
-                </CardContent>
-                <CardFooter className="flex justify-between">
-
-                <SlectedJobDrower /> {/* for non mobile devices */}
-                
-                <Button className=" hidden md:block" variant={"destructive" }>Open</Button>
-
-                    <div className=" flex gap-2">
-                        <Badge>Badge</Badge>
-                        <Badge>Badge</Badge>
-                        <Badge>Badge</Badge>
-                    </div>
-                </CardFooter>
-           
-            </Card>
-
-
-
-
-
-
-            <Card className=" p-5 bg-orange-500 min-w-[366px]">
-                <CardHeader>
-                    <CardTitle>Create project</CardTitle>
-                    <CardDescription>Deploy your new project in one-click.</CardDescription>
-                </CardHeader>
-                <CardContent>
-                 
-                </CardContent>
-                <CardFooter className="flex justify-between">
-
-                <SlectedJobDrower /> {/* for non mobile devices */}
-                
-                <Button className=" hidden md:block" variant={"destructive" }>Open</Button>
-
-                    <div className=" flex gap-2">
-                        <Badge>Badge</Badge>
-                        <Badge>Badge</Badge>
-                        <Badge>Badge</Badge>
-                    </div>
-                </CardFooter>
-           
-            </Card>
     </>
   )
 }
