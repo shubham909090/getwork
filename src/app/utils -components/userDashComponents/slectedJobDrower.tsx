@@ -9,10 +9,10 @@ import {
     DrawerHeader,
     DrawerTitle,
     DrawerTrigger,
-  } from "@/components/ui/drawer"
+  } from "@/app/ui/drawer"
   
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/app/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/app/ui/card"
 
 export function SlectedJobDrower() {
  

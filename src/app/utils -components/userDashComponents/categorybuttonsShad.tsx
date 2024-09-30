@@ -3,7 +3,7 @@
 
 import {
   Card
-} from "@/components/ui/card"
+} from "@/app/ui/card"
 
 
 import {
@@ -18,7 +18,7 @@ import {
     CommandItem,
     CommandList,
 
-  } from "@/components/ui/command"
+  } from "@/app/ui/command"
 import React from "react"
 
 

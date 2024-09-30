@@ -2,9 +2,9 @@
 
 import {
     Card
-  } from "@/components/ui/card"
+  } from "@/app/ui/card"
 import CategoryButtons from "./categorybuttonsShad"
-import { Button } from "@/components/ui/button"
+import { Button } from "@/app/ui/button"
 import {  X } from "lucide-react"
 
   

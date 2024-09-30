@@ -2,6 +2,7 @@
 
 import { useRecoilValueLoadable} from "recoil"
 import { cardsSelector } from "../../serverUtils/state";
+import React from "react";
 
 
 // fetches data deom server about available jobs in database (all rn no pagination) with all the categories it belongs to.
