@@ -108,6 +108,10 @@ function Jobcards() {
                     <Badge key={item.category.id}>{item.category.name}</Badge>
                   ))}
                 </div>
+                
+                <iframe width="full" height="200" className=' rounded-xl' src="https://www.youtube.com/embed/eVli-tstM5E" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+
+
               </CardHeader>
               <CardContent>
               <CardDescription className=' line-clamp-5'>
