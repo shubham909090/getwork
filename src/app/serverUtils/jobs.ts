@@ -2,8 +2,14 @@
 
 import prisma from "../db";
 
+
 export async function getAvailableJobs(page: number, limit: number) {
   const res = await prisma.job.findMany({
+    where: {
+      applications: {
+        none: {}, // Exclude jobs that have any applications
+      },
+    },
     skip: (page - 1) * limit, // Skip the previous pages
     take: limit,              // Fetch the specified limit
     select: {
@@ -61,4 +67,3 @@ export async function getJobsByCategoryIds(categoryIds: number[], page: number, 
 
   return jobs;
 }
-
