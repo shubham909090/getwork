@@ -13,51 +13,128 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// model User {
+//   id Int @id @default(autoincrement()) 
+//   name String 
+//   email String @unique
+//   password String
+//   role Role @default(USER)
+//   authToken String?
+//   crated DateTime @default(now())
+//   applications Application[]
+// }
+// model Seller {
+//   id         Int      @id @default(autoincrement())
+//   name       String
+//   email      String   @unique
+//   password   String
+//   role       Role     @default(SELLER)
+//   authToken  String?
+//   createdAt  DateTime @default(now())
+//   jobs Job[]
+// }
+
+
+
+// model Job {
+//   id          Int            @id @default(autoincrement())
+//   title       String
+//   description String
+//   createdAt   DateTime       @default(now())
+
+//   // Relationships
+//   sellerId    Int
+//   seller      Seller         @relation(fields: [sellerId], references: [id])
+
+//   applications Application[] // A job can have multiple applications
+
+//   categories  JobCategory[]
+// }
+
+
+// model Category {
+//   id       Int      @id @default(autoincrement())
+//   name     String   @unique
+//   jobs     JobCategory[]
+// }
+
+
+// model JobCategory {
+//   jobId       Int
+//   job         Job       @relation(fields: [jobId], references: [id])
+
+//   categoryId  Int
+//   category    Category  @relation(fields: [categoryId], references: [id])
+
+//   @@id([jobId, categoryId])
+// }
+
+// model Application {
+//   id         Int        @id @default(autoincrement())
+//   appliedAt  DateTime   @default(now())
+//   status     Status     @default(OPEN)
+
+//   // Relationships
+//   jobId      Int
+//   job        Job        @relation(fields: [jobId], references: [id])
+
+//   userId     Int        @unique
+//   user       User       @relation(fields: [userId], references: [id])
+// }
+
+// enum Role {
+//   USER
+//   SELLER
+// }
+// enum Status {
+//   OPEN
+//   PENDING
+//   CLOSED
+// }
 model User {
-  id Int @id @default(autoincrement()) 
-  name String 
-  email String @unique
-  password String
-  role Role @default(USER)
-  authToken String?
-  crated DateTime @default(now())
-  applications Application[]
-}
-model Seller {
-  id         Int      @id @default(autoincrement())
+  id         Int          @id @default(autoincrement()) 
   name       String
-  email      String   @unique
+  email      String       @unique
   password   String
-  role       Role     @default(SELLER)
+  role       Role         @default(USER)
   authToken  String?
-  createdAt  DateTime @default(now())
-  jobs Job[]
+  createdAt  DateTime     @default(now())
+  
+  // Sellers can have multiple jobs
+  jobs       Job[]        @relation("UserJobs")
+
+  // Users can apply for jobs (restricted to 1 in the application logic)
+  applications Application[]
+
+  // Users can be accepted to a job
+  acceptedJobs Job[]       @relation("AcceptedUserJobs")
 }
-
-
 
 model Job {
-  id          Int            @id @default(autoincrement())
-  title       String
-  description String
-  createdAt   DateTime       @default(now())
+  id              Int            @id @default(autoincrement())
+  title           String
+  description     String
+  createdAt       DateTime       @default(now())
+  
+  // Job belongs to a seller (a user with role SELLER)
+  sellerId        Int
+  seller          User           @relation("UserJobs", fields: [sellerId], references: [id])
+  
+  // Multiple users can apply, but only one can be accepted
+  applications    Application[]
+  
+  categories      JobCategory[]
 
-  // Relationships
-  sellerId    Int
-  seller      Seller         @relation(fields: [sellerId], references: [id])
-
-  applications Application[] // A job can have multiple applications
-
-  categories  JobCategory[]
+  // Tracks which user is accepted for this job (enforcing 1 user per job)
+  acceptedUserId  Int?         // Nullable since a job may not have an accepted user initially
+  acceptedUser    User?        @relation("AcceptedUserJobs", fields: [acceptedUserId], references: [id])
 }
-
 
 model Category {
   id       Int      @id @default(autoincrement())
   name     String   @unique
   jobs     JobCategory[]
 }
-
 
 model JobCategory {
   jobId       Int
@@ -72,22 +149,27 @@ model JobCategory {
 model Application {
   id         Int        @id @default(autoincrement())
   appliedAt  DateTime   @default(now())
-  status     Status     @default(OPEN)
-
+  status     Status     @default(OPEN)  // Use application status to track whether user is accepted
+  
   // Relationships
   jobId      Int
   job        Job        @relation(fields: [jobId], references: [id])
 
-  userId     Int        @unique
+  userId     Int
   user       User       @relation(fields: [userId], references: [id])
+
+  @@unique([jobId, userId])  // Ensures a user can apply only once to a job
 }
 
 enum Role {
   USER
   SELLER
 }
+
 enum Status {
   OPEN
   PENDING
   CLOSED
+  ACCEPTED  // Indicates that the application has been accepted and the user is assigned to the job
+  REJECTED  // Indicates the user has been rejected from the job
 }

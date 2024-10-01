@@ -2,7 +2,7 @@
 
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, DollarSign, MapPin } from 'lucide-react';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
@@ -99,31 +99,41 @@ function Jobcards() {
         <h2 className="text-3xl font-bold mb-8 text-center">Latest Micro Jobs</h2>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {data?.map((job) => (
-            <Card key={job.id}>
-              <CardHeader>
+            <Card key={job.id} className='flex flex-col justify-between'>
+                <div className=' flex flex-col justify-start'>
+                <CardHeader>
                 <CardTitle>{job.title}</CardTitle>
-                <div className="flex justify-start gap-2">
+                <div className="flex justify-start gap-2 py-2">
                   {job.categories.map((item) => (
                     <Badge key={item.category.id}>{item.category.name}</Badge>
                   ))}
                 </div>
               </CardHeader>
               <CardContent>
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground">
+              <CardDescription className=' line-clamp-5'>
+                  {job.description}
+              </CardDescription>
+              </CardContent>
+                </div>
+              <CardFooter>
+                <div className=' flex flex-col gap-4 w-screen'>
+                    
+                <div className='flex flex-row gap-4'>
+                <div className="flex flex-row space-x-2 text-sm text-muted-foreground mt-2">
                   <DollarSign className="h-4 w-4" />
                   <span>$100</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
+                <div className="flex flex-row space-x-2 text-sm text-muted-foreground mt-2">
                   <Clock className="h-4 w-4" />
                   <span>1 Hr</span>
                 </div>
-                <div className="flex items-center space-x-2 text-sm text-muted-foreground mt-2">
+                <div className="flex flex-row space-x-2 text-sm text-muted-foreground mt-2">
                   <MapPin className="h-4 w-4" />
                   <span>Pune</span>
                 </div>
-              </CardContent>
-              <CardFooter>
+                </div>
                 <Button className="w-full">Apply Now</Button>
+                </div>
               </CardFooter>
             </Card>
           ))}
