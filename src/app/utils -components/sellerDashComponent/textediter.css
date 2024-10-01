@@ -1,0 +1,116 @@
+/* texteditor.css */
+
+.prose :where(a) {
+    color: #3498db;
+    text-decoration-color: #3498db;
+  }
+  
+  .prose :where(a:hover) {
+    color: #2980b9;
+  }
+  
+  .prose :where(code) {
+    background-color: rgba(27,31,35,.05);
+    border-radius: 3px;
+    font-size: .875em;
+    margin: 0;
+    padding: .25em .5em;
+    white-space: pre-wrap;
+  }
+  
+  .prose :where(pre) {
+    background-color: rgba(0, 0, 0, 0.04);
+    border-radius: 6px;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+    font-size: 0.875rem;
+    line-height: 1.75rem;
+    margin-top: 0.75rem;
+    margin-bottom: 1.5rem;
+    overflow-x: auto;
+    padding: 1.25rem;
+    position: relative;
+  }
+  
+  .prose :where(img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0 auto;
+  }
+  
+  .prose :where(h1) {
+    font-weight: 800;
+    font-size: 2.25em;
+    margin-top: 0;
+    margin-bottom: 0.88888889em;
+  }
+  
+  .prose :where(h2) {
+    font-weight: 700;
+    font-size: 1.99999999em;
+    margin-top: 1.11111111em;
+    margin-bottom: 0.55555556em;
+  }
+  
+  .prose :where(h3) {
+    font-weight: 600;
+    font-size: 1.33333333em;
+    margin-top: 1.66666667em;
+    margin-bottom: 0.52777778em;
+  }
+  
+  .prose :where(h4) {
+    font-weight: 600;
+    font-size: 1em;
+    margin-top: 1.5em;
+    margin-bottom: 0.45em;
+  }
+  
+  .prose :where(blockquote) {
+    border-left-color: #dfe2e5;
+    border-left-style: solid;
+    border-left-width: 4px;
+    color: #818384;
+    font-style: italic;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 1rem;
+  }
+  
+  .prose :where(hr) {
+    border-color: #dfe2e5;
+    border-style: solid;
+    border-width: 1px 0 0;
+    margin: 1.5rem 0;
+  }
+  
+  .prose :where(ul > li::marker) {
+    color: #3498db;
+  }
+  
+  .prose :where(ol > li::marker) {
+    color: #3498db;
+  }
+  
+  .prose :where(strong) {
+    font-weight: 700;
+  }
+  
+  .prose :where(em) {
+    font-style: italic;
+  }
+  /* texteditor.css */
+
+.prose ul {
+    list-style-type: disc;
+  }
+  
+  .prose ol {
+    list-style-type: decimal;
+  }
+  
+  .prose :where(ul > li::marker),
+  .prose :where(ol > li::marker) {
+    color: #3498db;
+  }
+  
