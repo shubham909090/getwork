@@ -15,7 +15,9 @@ export async function getAvailableJobs(page: number, limit: number) {
     select: {
       id: true,
       title: true,
-      description: true,
+      shorturl:true,
+      shortdescription:true,
+      price:true,
       categories: {
         select: {
           category: {
@@ -51,7 +53,9 @@ export async function getJobsByCategoryIds(categoryIds: number[], page: number, 
     select: {
       id: true,
       title: true,
-      description: true,
+      shorturl:true,
+      shortdescription:true,
+      price:true,
       categories: {
         select: {
           category: {

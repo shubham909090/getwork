@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from 'react'
+import React, { SetStateAction, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 
@@ -8,6 +8,10 @@ import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { X } from "lucide-react"
 import Tiptap from '@/app/utils -components/sellerDashComponent/Textediter'
+import Popup from '@/app/utils -components/popup'
+import { Textarea } from '@/components/ui/textarea'
+
+
 
 
 type Category = {
@@ -20,9 +24,10 @@ type formdata = {
   title: string,
   shortVideoLink: string,
   largeVideoLink: string,
+  shortdescription:string,
   description: string,
   categories: Category[],
-  price: string,
+  price: number,
 }
 
 // Mock categories - replace with your actual categories
@@ -34,16 +39,20 @@ const CATEGORIES = [
   { id: 5, name: "Writing" },
 ].sort((a, b) => a.name.localeCompare(b.name))
 
+
 export default function CreateJobForm() {
+  const [popup, setPopup]= useState({title:'',description:'',visible:false})
+
 
 
   const [formData, setFormData] = useState<formdata>({
     title: '',
     shortVideoLink: '',
     largeVideoLink: '',
+    shortdescription:'',
     description: '',
     categories: [],
-    price: '',
+    price: 0,
   })
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
@@ -69,13 +78,15 @@ export default function CreateJobForm() {
   }
 
   const handleSubmit = () => {
+    setPopup({title:'you sureeeee?',description:'broooooooooooooo you sureeeeeeeeeeeeeeeeeeeeeee?',visible:true})
     // Here you would typically send the formData to your backend
     console.log(formData)
     // Add your submission logic here
   }
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center p-4">
+    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
+      <Popup title={popup.title} description={popup.description} visible={popup.visible} set={setPopup}/>
       <div className=" w-full space-y-8 bg-card p-8 rounded-lg shadow">
         <h1 className="text-3xl font-bold text-center">Create a New Job</h1>
         
@@ -88,6 +99,7 @@ export default function CreateJobForm() {
               value={formData.title}
               onChange={handleInputChange}
               placeholder="Enter job title"
+              required={true}
             />
           </div>
 
@@ -110,6 +122,18 @@ export default function CreateJobForm() {
               value={formData.largeVideoLink}
               onChange={handleInputChange}
               placeholder="Enter large video link"
+            />
+          </div>
+
+          <div>
+            <Label htmlFor="shortdescription" className='texteditor'>Short Job Description</Label>
+            <Textarea
+              id="shortdescription"
+              name="shortdescription"
+              value={formData.shortdescription}
+              onChange={handleInputChange}
+              placeholder="Enter full job short description"
+              rows={5}
             />
           </div>
 
@@ -164,11 +188,12 @@ export default function CreateJobForm() {
               value={formData.price}
               onChange={handleInputChange}
               placeholder="Enter price"
+              required={true}
             />
           </div>
         </div>
 
-        <Button className="w-full" onClick={handleSubmit}>Create Job</Button>
+        <Button className="w-full" onClick={handleSubmit}disabled={!formData.title || !formData.price }>Create Job</Button>
       </div>
     </div>
   )

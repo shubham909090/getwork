@@ -113,7 +113,12 @@ model User {
 model Job {
   id              Int            @id @default(autoincrement())
   title           String
-  description     String
+  shorturl        String?
+  longurl         String?
+  shortdescription String
+  description     Json?
+  price           Float
+
   createdAt       DateTime       @default(now())
   
   // Job belongs to a seller (a user with role SELLER)
@@ -164,6 +169,7 @@ model Application {
 enum Role {
   USER
   SELLER
+
 }
 
 enum Status {

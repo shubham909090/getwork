@@ -11,17 +11,6 @@ import { selectedCategories } from './categoryselector';
 import { Skeleton } from '@/components/ui/skeleton';
 
 
-type jobs = {
-  id: number;
-  title: string;
-  categories: {
-    category: {
-      name: string;
-      id: number;
-    };
-  }[];
-  description: string;
-}[];
 
 export const pageatom = atom({
     key:'pageatom',
@@ -50,6 +39,13 @@ function Jobcards() {
   const goback = () => {
     setPage((prev) => prev - 1); // Increment page to fetch the next set
   };
+
+  const youtubeUrl =(url:string)=>{
+    const videoId = url.match(
+      /(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&]+)/
+    )?.[1];
+    return videoId
+  }
 
 
   // Loading state
@@ -109,13 +105,13 @@ function Jobcards() {
                   ))}
                 </div>
                 
-                <iframe width="full" height="200" className=' rounded-xl' src="https://www.youtube.com/embed/eVli-tstM5E" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                <iframe width="full" height="200" className=' rounded-xl' src={`https://www.youtube.com/embed/${youtubeUrl(job.shorturl)}?autoplay=0&mute=0&controls=1`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
 
 
               </CardHeader>
               <CardContent>
               <CardDescription className=' line-clamp-5'>
-                  {job.description}
+                  {job.shortdescription}
               </CardDescription>
               </CardContent>
                 </div>
@@ -125,7 +121,7 @@ function Jobcards() {
                 <div className='flex flex-row gap-4'>
                 <div className="flex flex-row space-x-2 text-sm text-muted-foreground mt-2">
                   <DollarSign className="h-4 w-4" />
-                  <span>$100</span>
+                  <span>{job.price}</span>
                 </div>
                 <div className="flex flex-row space-x-2 text-sm text-muted-foreground mt-2">
                   <Clock className="h-4 w-4" />
