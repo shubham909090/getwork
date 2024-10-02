@@ -5,13 +5,14 @@ import React from 'react'
 const Sidebar = () => {
 
   return (
-    <div className="w-64 bg-white border-r">
+    <div className="w-64 bg-white border-r z-10">
         <div className="p-4">
-          <h2 className="text-xl font-bold mb-4">Seller Dashboard</h2>
+            <Link href='/sellerdash'><h2 className="text-xl font-bold mb-4">Seller Dashboard</h2></Link>
+          
           <nav className="space-y-2">
-            <Link href="/sellerdash/your-jobs" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
+            <Link href="/sellerdash/createjob" className="flex items-center px-4 py-2 text-gray-700 hover:bg-gray-100 rounded">
               <Briefcase className="mr-3 h-4 w-4" />
-              Your Jobs
+              Create Jobs
             </Link>
             <a href="#" className="flex items-center px-4 py-2 text-gray-600 hover:bg-gray-100 rounded">
               <MessageSquare className="mr-3 h-4 w-4" />

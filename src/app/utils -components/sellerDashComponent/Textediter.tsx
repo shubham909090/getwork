@@ -17,6 +17,8 @@ import Bold from '@tiptap/extension-bold';
 import Italic from '@tiptap/extension-italic';
 import Text from "@tiptap/extension-text";
 import { Button } from '@/components/ui/button';
+import TextAlign from '@tiptap/extension-text-align';
+import { Bold as B, Italic as I, ListIcon, ListOrdered,AlignLeft,AlignCenter,Link as L,Code2Icon,LucideScanLine,QuoteIcon,LucideLink2Off, Link2Off } from 'lucide-react';
 import './textediter.css'
 
 const content = `
@@ -66,6 +68,9 @@ const Tiptap = () => {
         Document,
         Text,
         Paragraph,
+        TextAlign.configure({
+            types: ['heading', 'paragraph'], // You can apply text align to specific block types
+          }),
         BulletList.configure({
             HTMLAttributes: {
               class: 'list-disc'
@@ -109,14 +114,20 @@ const Tiptap = () => {
   return (
     <div className="editor flex flex-col justify-between gap-5 border rounded-lg ">
       {/* Toolbar with Button  variant={"secondary"}s */}
-      <div className=" flex flex-row py-5 gap-5 justify-center">
-      <Button  onClick={() => editor.chain().focus().toggleBold().run()} disabled={!editor.can().chain().focus().toggleBold().run()}>Bold</Button >
-        <Button  onClick={() => editor.chain().focus().toggleItalic().run()} disabled={!editor.can().chain().focus().toggleItalic().run()}>Italic</Button >
-        <Button  onClick={() => editor.chain().focus().toggleBulletList().run()} disabled={!editor.can().chain().focus().toggleBulletList().run()}>Bullet List</Button >
-        <Button  onClick={() => editor.chain().focus().toggleOrderedList().run()} disabled={!editor.can().chain().focus().toggleOrderedList().run()}>Ordered List</Button >
-        <Button  onClick={() => editor.chain().focus().toggleCodeBlock().run()}>Code Block</Button >
-        <Button  onClick={() => editor.chain().focus().toggleBlockquote().run()}>Blockquote</Button >
-        <Button  onClick={() => editor.chain().focus().setHorizontalRule().run()}>Horizontal Rule</Button >
+      <div className=" flex flex-wrap  py-5 gap-5 justify-center">
+      <Button  onClick={() => editor.chain().focus().toggleBold().run()} disabled={!editor.can().chain().focus().toggleBold().run()}><B /></Button >
+        <Button  onClick={() => editor.chain().focus().toggleItalic().run()} disabled={!editor.can().chain().focus().toggleItalic().run()}><I /></Button >
+        <Button  onClick={() => editor.chain().focus().toggleBulletList().run()} disabled={!editor.can().chain().focus().toggleBulletList().run()}><ListIcon /></Button >
+        <Button  onClick={() => editor.chain().focus().toggleOrderedList().run()} disabled={!editor.can().chain().focus().toggleOrderedList().run()}><ListOrdered /></Button >
+        <Button onClick={() => editor.chain().focus().setTextAlign('left').run()}>
+        <AlignLeft />
+      </Button>
+      <Button onClick={() => editor.chain().focus().setTextAlign('center').run()}>
+      <AlignCenter />
+      </Button>
+        <Button  onClick={() => editor.chain().focus().toggleCodeBlock().run()}><Code2Icon /></Button >
+        <Button  onClick={() => editor.chain().focus().toggleBlockquote().run()}><QuoteIcon /></Button >
+        <Button  onClick={() => editor.chain().focus().setHorizontalRule().run()}><LucideScanLine /></Button >
         <Button  onClick={() => editor.chain().focus().setParagraph().run()}>Paragraph</Button >
         <Button  onClick={() => editor.chain().focus().setHeading({ level: 2 }).run()}>H2</Button >
         <Button  onClick={() => editor.chain().focus().setHeading({ level: 3 }).run()}>H3</Button >
@@ -127,8 +138,8 @@ const Tiptap = () => {
             } else {
               alert('Please enter a valid URL starting with http:// or https://')
             }
-          }}>Link</Button >
-        <Button  onClick={() => editor.chain().focus().unsetLink().run()}>Remove Link</Button >
+          }}><L /></Button >
+        <Button  onClick={() => editor.chain().focus().unsetLink().run()}> <Link2Off /></Button >
       </div>
 
       {/* Tiptap Editor */}
