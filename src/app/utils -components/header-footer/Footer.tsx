@@ -1,17 +1,13 @@
 import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import React from 'react'
+import FooterUpperSect from './FooterUpperSect'
+
 
 function Footer() {
   return (
     <>
-        <section className="py-16 bg-primary text-white">
-          <div className="container mx-auto px-4 text-center">
-            <h2 className="text-3xl font-bold mb-4">Have a task? Post it on MicroJobs</h2>
-            <p className="text-xl mb-8">Connect with talented freelancers for quick and efficient task completion.</p>
-            <Button size="lg" variant="secondary">Post a Job</Button>
-          </div>
-        </section>
+<FooterUpperSect></FooterUpperSect>
         
     <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4">

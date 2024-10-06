@@ -1,17 +1,23 @@
-"use client"
+'use client'
 
-import React, { SetStateAction, useState } from 'react'
+import React, { SetStateAction, useActionState, useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
-
 import { Label } from "@/components/ui/label"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { X } from "lucide-react"
 import Tiptap from '@/app/utils -components/sellerDashComponent/Textediter'
 import Popup from '@/app/utils -components/popup'
 import { Textarea } from '@/components/ui/textarea'
+import { getAllCategories } from '@/app/serverUtils/cat'
+import { useQuery } from '@tanstack/react-query'
+import { atom, useRecoilState } from 'recoil'
 
 
+type TiptapJSON = {
+  type: string;
+  content?: Array<{ type: string; attrs?: Record<string, unknown>; content?: Array<TiptapJSON> }>
+}
 
 
 type Category = {
@@ -25,35 +31,40 @@ type formdata = {
   shortVideoLink: string,
   largeVideoLink: string,
   shortdescription:string,
-  description: string,
+  description: TiptapJSON,
   categories: Category[],
   price: number,
 }
-
-// Mock categories - replace with your actual categories
-const CATEGORIES = [
-  { id: 1, name: "Digital Marketing" },
-  { id: 2, name: "Graphic Design" },
-  { id: 3, name: "Video Editing" },
-  { id: 4, name: "Web Development" },
-  { id: 5, name: "Writing" },
-].sort((a, b) => a.name.localeCompare(b.name))
-
-
-export default function CreateJobForm() {
-  const [popup, setPopup]= useState({title:'',description:'',visible:false})
-
-
-
-  const [formData, setFormData] = useState<formdata>({
+export const formDatatom = atom<formdata>({
+  key:"formdata",
+  default:{
     title: '',
     shortVideoLink: '',
     largeVideoLink: '',
     shortdescription:'',
-    description: '',
+    description: {
+      type: "doc",
+      content: []
+    },
     categories: [],
     price: 0,
-  })
+  }
+})
+// Mock categories - replace with your actual categories
+
+
+export default function CreateJobForm() {
+
+  const { data, isLoading, error } = useQuery({
+    queryKey: ['fetchcategories'],
+    queryFn: () => getAllCategories(),
+  });
+
+  const [popup, setPopup]= useState({title:'',description:'',visible:false})
+
+
+
+  const [formData, setFormData] = useRecoilState(formDatatom)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
@@ -61,7 +72,7 @@ export default function CreateJobForm() {
   }
 
   const handleCategoryAdd = (categoryId: string) => {
-    const category = CATEGORIES.find(cat => cat.id.toString() === categoryId)
+    const category = data?.find(cat => cat.id.toString() === categoryId)
     if (category && !formData.categories.some(cat => cat.id === category.id)) {
       setFormData(prev => ({
         ...prev,
@@ -80,11 +91,12 @@ export default function CreateJobForm() {
   const handleSubmit = () => {
     setPopup({title:'you sureeeee?',description:'broooooooooooooo you sureeeeeeeeeeeeeeeeeeeeeee?',visible:true})
     // Here you would typically send the formData to your backend
-    console.log(formData)
+
     // Add your submission logic here
   }
 
   return (
+    
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
       <Popup title={popup.title} description={popup.description} visible={popup.visible} set={setPopup}/>
       <div className=" w-full space-y-8 bg-card p-8 rounded-lg shadow">
@@ -139,14 +151,6 @@ export default function CreateJobForm() {
 
           <div>
             <Label htmlFor="description" className='texteditor'>Full Job Description</Label>
-            {/* <Textarea
-              id="description"
-              name="description"
-              value={formData.description}
-              onChange={handleInputChange}
-              placeholder="Enter full job description"
-              rows={5}
-            /> */}
             <Tiptap />
           </div>
 
@@ -157,11 +161,11 @@ export default function CreateJobForm() {
                 <SelectValue placeholder="Select a category" />
               </SelectTrigger>
               <SelectContent className='overflow-y-scroll max-h-screen'>
-                {CATEGORIES.map(category => (
+                {isLoading?(<div>Loading...</div>) :(data?.sort((a, b) => a.name.localeCompare(b.name)).map(category => (
                   <SelectItem key={category.id} value={category.id.toString()}>
                     {category.name}
                   </SelectItem>
-                ))}
+                )))}
               </SelectContent>
             </Select>
             <div className="flex flex-wrap gap-2 mt-2">
@@ -193,7 +197,7 @@ export default function CreateJobForm() {
           </div>
         </div>
 
-        <Button className="w-full" onClick={handleSubmit}disabled={!formData.title || !formData.price }>Create Job</Button>
+        <Button className="w-full" onClick={handleSubmit}disabled={!formData.title || !formData.price || !formData.shortdescription }>Create Job</Button>
       </div>
     </div>
   )

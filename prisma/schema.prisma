@@ -13,101 +13,67 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-// model User {
-//   id Int @id @default(autoincrement()) 
-//   name String 
-//   email String @unique
-//   password String
-//   role Role @default(USER)
-//   authToken String?
-//   crated DateTime @default(now())
-//   applications Application[]
-// }
-// model Seller {
-//   id         Int      @id @default(autoincrement())
-//   name       String
-//   email      String   @unique
-//   password   String
-//   role       Role     @default(SELLER)
-//   authToken  String?
-//   createdAt  DateTime @default(now())
-//   jobs Job[]
-// }
-
-
-
-// model Job {
-//   id          Int            @id @default(autoincrement())
-//   title       String
-//   description String
-//   createdAt   DateTime       @default(now())
-
-//   // Relationships
-//   sellerId    Int
-//   seller      Seller         @relation(fields: [sellerId], references: [id])
-
-//   applications Application[] // A job can have multiple applications
-
-//   categories  JobCategory[]
-// }
-
-
-// model Category {
-//   id       Int      @id @default(autoincrement())
-//   name     String   @unique
-//   jobs     JobCategory[]
-// }
-
-
-// model JobCategory {
-//   jobId       Int
-//   job         Job       @relation(fields: [jobId], references: [id])
-
-//   categoryId  Int
-//   category    Category  @relation(fields: [categoryId], references: [id])
-
-//   @@id([jobId, categoryId])
-// }
-
-// model Application {
-//   id         Int        @id @default(autoincrement())
-//   appliedAt  DateTime   @default(now())
-//   status     Status     @default(OPEN)
-
-//   // Relationships
-//   jobId      Int
-//   job        Job        @relation(fields: [jobId], references: [id])
-
-//   userId     Int        @unique
-//   user       User       @relation(fields: [userId], references: [id])
-// }
-
-// enum Role {
-//   USER
-//   SELLER
-// }
-// enum Status {
-//   OPEN
-//   PENDING
-//   CLOSED
-// }
-model User {
-  id         Int          @id @default(autoincrement()) 
-  name       String
-  email      String       @unique
-  password   String
-  role       Role         @default(USER)
-  authToken  String?
-  createdAt  DateTime     @default(now())
+model Account {
+  id                 String  @id @default(cuid())
+  userId             String  @map("user_id")
+  type               String
+  provider           String
+  providerAccountId  String  @map("provider_account_id")
+  refresh_token      String? @db.Text
+  access_token       String? @db.Text
+  expires_at         Int?
+  token_type         String?
+  scope              String?
+  id_token           String? @db.Text
+  session_state      String?
+ 
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+ model User {
+  id              String       @id @default(cuid()) 
+  name            String?
+  email           String?      @unique
+  password        String?      // Make password nullable for OAuth providers
+  role            Role         @default(USER)
+  emailVerified   DateTime?    @map("email_verified")
+  image           String?
+  accounts        Account[]
+  sessions        Session[]
+  createdAt       DateTime     @default(now())
   
   // Sellers can have multiple jobs
-  jobs       Job[]        @relation("UserJobs")
+  jobs            Job[]        @relation("UserJobs")
 
   // Users can apply for jobs (restricted to 1 in the application logic)
-  applications Application[]
+  applications    Application[]
 
   // Users can be accepted to a job
-  acceptedJobs Job[]       @relation("AcceptedUserJobs")
+  acceptedJobs    Job[]        @relation("AcceptedUserJobs")
+  
+  @@map("users")
+}
+
+model Session {
+  id           String      @id @default(cuid())
+  sessionToken String      @unique @map("session_token")
+  userId       String      @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+ 
+  @@map("sessions")
+}
+
+ 
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+ 
+  @@unique([identifier, token])
+  @@map("verification_tokens")
 }
 
 model Job {
@@ -118,11 +84,12 @@ model Job {
   shortdescription String
   description     Json?
   price           Float
+  taken           Boolean
 
   createdAt       DateTime       @default(now())
   
   // Job belongs to a seller (a user with role SELLER)
-  sellerId        Int
+  sellerId        String
   seller          User           @relation("UserJobs", fields: [sellerId], references: [id])
   
   // Multiple users can apply, but only one can be accepted
@@ -131,7 +98,7 @@ model Job {
   categories      JobCategory[]
 
   // Tracks which user is accepted for this job (enforcing 1 user per job)
-  acceptedUserId  Int?         // Nullable since a job may not have an accepted user initially
+  acceptedUserId  String?         // Nullable since a job may not have an accepted user initially
   acceptedUser    User?        @relation("AcceptedUserJobs", fields: [acceptedUserId], references: [id])
 }
 
@@ -160,7 +127,7 @@ model Application {
   jobId      Int
   job        Job        @relation(fields: [jobId], references: [id])
 
-  userId     Int
+  userId     String
   user       User       @relation(fields: [userId], references: [id])
 
   @@unique([jobId, userId])  // Ensures a user can apply only once to a job

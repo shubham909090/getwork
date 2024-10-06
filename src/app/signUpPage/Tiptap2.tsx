@@ -19,9 +19,9 @@ import Text from "@tiptap/extension-text";
 import { Button } from '@/components/ui/button';
 import TextAlign from '@tiptap/extension-text-align';
 import { Bold as B, Italic as I, ListIcon, ListOrdered,AlignLeft,AlignCenter,Link as L,Code2Icon,LucideScanLine,QuoteIcon,LucideLink2Off, Link2Off } from 'lucide-react';
-import './textediter.css'
+import '../utils -components/sellerDashComponent/textediter.css'
 import { useSetRecoilState } from 'recoil';
-import { formDatatom } from '@/app/sellerdash/createjob/page';
+import { signUpStateatom } from './page';
 
 const content = `
 <h2>
@@ -59,7 +59,7 @@ type TiptapJSON = {
   }
 const Tiptap = () => {
 
-    const setState =useSetRecoilState(formDatatom)
+    const setState =useSetRecoilState(signUpStateatom)
 
     const putInState= (json: TiptapJSON)=>{
         setState(prev => ({...prev,description: {...json}}))

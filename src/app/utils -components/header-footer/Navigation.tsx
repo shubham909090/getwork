@@ -1,7 +1,10 @@
+
 import { Button } from '@/components/ui/button'
 import { Briefcase } from 'lucide-react'
 import Link from 'next/link'
 import React from 'react'
+import Signin from './signin'
+
 
 function Navigation() {
   return (
@@ -16,10 +19,7 @@ function Navigation() {
         <Link href="#" className="text-sm font-medium hover:text-primary">Post a Job</Link>
         <Link href="#" className="text-sm font-medium hover:text-primary">How It Works</Link>
       </nav>
-      <div className="flex space-x-2">
-        <Button variant="ghost">Log In</Button>
-        <Button>Sign Up</Button>
-      </div>
+      <Signin></Signin>
     </div>
   </header>
   )
