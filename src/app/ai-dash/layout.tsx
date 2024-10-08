@@ -1,6 +1,6 @@
 import React, { Children } from "react";
-import Navigation from "../utils -components/header-footer/Navigation";
 import Footer from "../utils -components/header-footer/Footer";
+import NavigationWraper from "../utils -components/header-footer/NavigationWraper";
 
 
 
@@ -8,7 +8,7 @@ export default function layout({ children }:{ children: React.ReactNode}) {
   return (
     <>
 
-      <Navigation />
+      <NavigationWraper />
       {children}
       <Footer />
     

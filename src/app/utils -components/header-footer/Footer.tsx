@@ -1,13 +1,16 @@
-import { Button } from '@/components/ui/button'
+
 import Link from 'next/link'
 import React from 'react'
 import FooterUpperSect from './FooterUpperSect'
+import { auth } from '../../../../auth'
 
+async function Footer() {
 
-function Footer() {
+    const session =await auth()
+
   return (
     <>
-<FooterUpperSect></FooterUpperSect>
+    {session ? null : <FooterUpperSect ></FooterUpperSect>}
         
     <footer className="bg-gray-100 py-8">
         <div className="container mx-auto px-4">

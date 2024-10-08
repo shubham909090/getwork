@@ -1,7 +1,7 @@
 "use client"
 
 import { useRecoilValueLoadable} from "recoil"
-import { cardsSelector } from "../../serverUtils/state";
+import { cardsSelector } from "../../server/serverUtils/state";
 import React from "react";
 
 

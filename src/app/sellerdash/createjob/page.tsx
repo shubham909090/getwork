@@ -1,6 +1,6 @@
 'use client'
 
-import React, { SetStateAction, useActionState, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
@@ -9,7 +9,7 @@ import { X } from "lucide-react"
 import Tiptap from '@/app/utils -components/sellerDashComponent/Textediter'
 import Popup from '@/app/utils -components/popup'
 import { Textarea } from '@/components/ui/textarea'
-import { getAllCategories } from '@/app/serverUtils/cat'
+import { getAllCategories } from '@/app/server/serverUtils/cat'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useRecoilState } from 'recoil'
 
@@ -94,7 +94,13 @@ export default function CreateJobForm() {
 
     // Add your submission logic here
   }
-
+  if(isLoading){
+    return<div className="flex flex-col h-screen w-full justify-center items-center">
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin">
+      <path d="M21 12a9 9 0 1 1-6.219-8.56" />
+    </svg>
+  </div>
+  }
   return (
     
     <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">

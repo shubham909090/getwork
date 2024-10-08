@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import React from 'react';
 import { atom, useRecoilState, useSetRecoilState } from 'recoil';
 import { useQuery } from '@tanstack/react-query';
-import { getAllCategories } from '@/app/serverUtils/cat';
+import { getAllCategories } from '@/app/server/serverUtils/cat';
 import { pageatom } from './jobcards';
 import { Skeleton } from '@/components/ui/skeleton';
 

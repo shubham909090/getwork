@@ -9,7 +9,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select'
 import { atom, useRecoilState } from 'recoil'
 import Popup from '../utils -components/popup'
-import { getAllCategories } from '../serverUtils/cat'
+import { getAllCategories } from '../server/serverUtils/cat'
 import { useQuery } from '@tanstack/react-query'
 import Tiptap2 from './Tiptap2'
 import { X } from 'lucide-react'

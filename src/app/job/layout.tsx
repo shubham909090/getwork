@@ -1,5 +1,5 @@
 import React, { Children } from "react";
-import Navigation from "../utils -components/header-footer/Navigation";
+import Navigation from "../utils -components/header-footer/NavigationWraper";
 import Footer from "../utils -components/header-footer/Footer";
 
 

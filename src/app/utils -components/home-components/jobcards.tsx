@@ -6,7 +6,7 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Clock, DollarSign, MapPin } from 'lucide-react';
 import { atom, useRecoilState, useRecoilValue } from 'recoil';
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
-import { getJobsByCategoryIds, getAvailableJobs } from '@/app/serverUtils/jobs';
+import { getJobsByCategoryIds, getAvailableJobs } from '@/app/server/serverUtils/jobs';
 import { selectedCategories } from './categoryselector';
 import { Skeleton } from '@/components/ui/skeleton';
 
