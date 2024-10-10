@@ -8,29 +8,7 @@ import Categoryselector from './categoryselector'
 import Jobcards from './jobcards'
 import { atom, RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil'
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-
-// type categories ={
-//     id: number;
-//     name: string;
-// }[]
-
-// type jobs = {
-//     categories: {
-//         category: {
-//             name: string;
-//             id: number;
-//         };
-//     }[];
-//     title: string;
-//     id: number;
-//     description: string;
-// }[]
-
-// export const selectedjobs = atom<jobs
-// | undefined>({
-//     key:'selectedjobs',
-//     default:undefined
-// })
+import HomeInput from './HomeInput'
 
 
 
@@ -51,13 +29,7 @@ const Home = () => {
 
 
 
-          <div className="flex gap-2 mb-4">
-            <Input type="text" placeholder="Search for jobs..." className="bg-white text-black" />
-            <Button type="submit" size="icon">
-              <Search className="h-4 w-4" />
-              <span className="sr-only">Search</span>
-            </Button>
-          </div>
+    <HomeInput></HomeInput>
          
           <Categoryselector/>
           

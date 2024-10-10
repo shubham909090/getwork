@@ -13,7 +13,7 @@ export const SignUp =async()=>{
 }
 
 export const logout =async()=>{
-    await signOut({redirect:true})
+    await signOut({redirectTo:'/'})
     
 }
 

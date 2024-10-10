@@ -105,7 +105,7 @@ function Jobcards() {
                   ))}
                 </div>
                 
-                <iframe width="full" height="200" className=' rounded-xl' src={`https://www.youtube.com/embed/${youtubeUrl(job.shorturl)}?autoplay=0&mute=0&controls=1`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>
+                {job.shorturl ? <iframe width="full" height="200" className=' rounded-xl' src={`https://www.youtube.com/embed/${youtubeUrl(job.shorturl)}?autoplay=0&mute=0&controls=1`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>: null} 
 
 
               </CardHeader>

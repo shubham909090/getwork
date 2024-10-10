@@ -12,6 +12,11 @@ import { Textarea } from '@/components/ui/textarea'
 import { getAllCategories } from '@/app/server/serverUtils/cat'
 import { useQuery } from '@tanstack/react-query'
 import { atom, useRecoilState } from 'recoil'
+import { createTheJob } from '@/app/server/serverUtils/jobs'
+import { useSession } from 'next-auth/react'
+
+
+
 
 
 type TiptapJSON = {
@@ -55,6 +60,11 @@ export const formDatatom = atom<formdata>({
 
 export default function CreateJobForm() {
 
+
+    
+const {data:session,status}=useSession()
+
+
   const { data, isLoading, error } = useQuery({
     queryKey: ['fetchcategories'],
     queryFn: () => getAllCategories(),
@@ -88,10 +98,31 @@ export default function CreateJobForm() {
     }))
   }
 
-  const handleSubmit = () => {
-    setPopup({title:'you sureeeee?',description:'broooooooooooooo you sureeeeeeeeeeeeeeeeeeeeeee?',visible:true})
-    // Here you would typically send the formData to your backend
+  const handleSubmit = async() => {
+    const cleanFormData = {
+      ...formData,
+      description: JSON.stringify(formData.description), // convert Tiptap JSON to string
+      categories: formData.categories.map(cat => cat.id), // convert categories to array of IDs
+    };
 
+   const res = await createTheJob(cleanFormData,session?.user?.email)
+   if(res){
+    setPopup({title:'Done',description:'New job created',visible:true})
+    setFormData({
+      title: '',
+      shortVideoLink: '',
+      largeVideoLink: '',
+      shortdescription:'',
+      description: {
+        type: "doc",
+        content: []
+      },
+      categories: [],
+      price: 0,
+    })
+   }else{
+    setPopup({title:'Error',description:'Some error while creating a job',visible:true})
+   }
     // Add your submission logic here
   }
   if(isLoading){

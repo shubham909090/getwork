@@ -17,10 +17,10 @@ const Popup = (props: { title: string; description: string; visible: boolean, se
           <Card className="w-full max-w-md mx-auto">
             <CardHeader className="flex flex-row items-center gap-2">
                 <AlertTriangleIcon className="h-6 w-6 text-yellow-500" />
-                <CardTitle>Warning</CardTitle>
+                <CardTitle>{props.title}</CardTitle>
             </CardHeader>
             <CardContent>
-                <p>This is an important message. Please read carefully before proceeding.</p>
+                <p>{props.description}</p>
             </CardContent>
             <CardFooter className="flex justify-end">
                 <Button onClick={handleClick}>OK</Button>

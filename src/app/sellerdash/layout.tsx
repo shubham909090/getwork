@@ -5,14 +5,16 @@ import Sidebar from '../utils -components/sellerDashComponent/sidebar'
 import Header from '../utils -components/sellerDashComponent/header'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecoilRoot } from 'recoil';
+import AuthProvider from '../authprovider';
 
 
 
 
 export default function layout({ children }:{ children: React.ReactNode}) {
+    
 
     return (
-
+<AuthProvider>
     <div className="flex h-screen bg-gray-100">
         
         <Sidebar></Sidebar>
@@ -20,12 +22,12 @@ export default function layout({ children }:{ children: React.ReactNode}) {
         <RecoilRoot>
         <main className="flex-1 overflow-y-auto">
         <Header></Header>
-        {children}
+        {children} 
         </main>
         </RecoilRoot>
         </QueryClientProvider>
     </div>
-
+</AuthProvider>
   
     );
   }
