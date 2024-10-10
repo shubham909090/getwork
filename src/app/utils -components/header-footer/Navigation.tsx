@@ -19,10 +19,11 @@ const Navigation = () => {
     </svg>
   </div>
   }
+  if(session){
   return (
     <header className="bg-white border-b">
     <div className="container mx-auto px-4 py-4 flex items-center justify-between">
-      <Link href="/ai-dash" className="flex items-center space-x-2">
+      <Link href="/" className="flex items-center space-x-2">
         <Briefcase className="h-6 w-6 text-primary" />
         <span className="text-xl font-bold">MicroJobs</span>
       </Link>
@@ -35,6 +36,7 @@ const Navigation = () => {
     </div>
   </header>
   )
+}
 }
 
 export default Navigation

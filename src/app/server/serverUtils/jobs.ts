@@ -2,7 +2,6 @@
 
 import { redirect } from "next/navigation";
 import { prisma } from "../../../../db"
-import { NextResponse } from "next/server";
 import { JSONContent } from "@tiptap/react";
 
 
@@ -150,4 +149,81 @@ export const searchJobs = async(query: string)=>{
 
   return jobs
   
+}
+
+export const getajob =async(jobId:number)=>{
+
+  const job = await prisma.job.findFirst({
+    where: {
+      id: jobId,
+      taken: false,
+      applications: {
+        none: {}, // Ensures there are no applications for this job
+      },
+    },
+    include: {
+      seller: {
+        select: {
+          id: true,
+          name: true,
+          image: true,
+        },
+      },
+      categories: {
+        include: {
+          category: {
+            select: {
+              id:true,
+              name: true, // Only select the name of the category
+            },
+          },
+        },
+      },
+    },
+  });
+
+  if(job){
+    return job
+  }
+
+
+
+}
+
+
+export async function getRelatedJobs(categoryIds: number[]) {
+  const jobs = await prisma.job.findMany({
+    where: {
+      categories: {
+        some: {
+          categoryId: {
+            in: categoryIds, // Match any of the specified category IDs
+          },
+        },
+      },
+      applications: {
+        none: {}, // Exclude jobs with any applications
+      },
+    }, // Skip the previous pages
+    take: 10,              // Fetch the specified limit
+    select: {
+      id: true,
+      title: true,
+      shorturl:true,
+      shortdescription:true,
+      price:true,
+      categories: {
+        select: {
+          category: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return jobs;
 }

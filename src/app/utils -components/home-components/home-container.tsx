@@ -1,8 +1,5 @@
 "use client"
 
-import { Button } from '@/components/ui/button'
-import { Input } from '@/components/ui/input'
-import { Search } from 'lucide-react'
 import React from 'react'
 import Categoryselector from './categoryselector'
 import Jobcards from './jobcards'
@@ -26,19 +23,13 @@ const Home = () => {
         <h1 className="text-4xl font-bold mb-4">Find Your Perfect Micro Job</h1>
         <p className="text-xl mb-8">Thousands of small tasks. One big opportunity.</p>
         <div className="max-w-3xl mx-auto">
-
-
-
-    <HomeInput></HomeInput>
-         
+          <HomeInput></HomeInput>
           <Categoryselector/>
-          
         </div>
       </div>
     </section>
-
-        <Jobcards />
-  </main>
+    <Jobcards />
+    </main>
   </RecoilRoot>
   </QueryClientProvider>
   )

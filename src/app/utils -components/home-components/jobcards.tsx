@@ -9,6 +9,7 @@ import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getJobsByCategoryIds, getAvailableJobs } from '@/app/server/serverUtils/jobs';
 import { selectedCategories } from './categoryselector';
 import { Skeleton } from '@/components/ui/skeleton';
+import Link from 'next/link';
 
 
 
@@ -40,13 +41,12 @@ function Jobcards() {
     setPage((prev) => prev - 1); // Increment page to fetch the next set
   };
 
-  const youtubeUrl =(url:string)=>{
+  const youtubeUrl = (url: string) => {
     const videoId = url.match(
-      /(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&]+)/
+        /(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&]+)/
     )?.[1];
-    return videoId
-  }
-
+    return videoId || ''; // Fallback to an empty string
+};
 
   // Loading state
   if (isLoading) {
@@ -132,7 +132,7 @@ function Jobcards() {
                   <span>Pune</span>
                 </div>
                 </div>
-                <Button className="w-full">Apply Now</Button>
+                <Link href={`/job/${job.id}`}><Button className="w-full">Apply Now</Button></Link>
                 </div>
               </CardFooter>
             </Card>

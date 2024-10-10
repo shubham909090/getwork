@@ -192,10 +192,10 @@ const {data:session,status}=useSession()
           </div>
 
           <div>
-            <Label>Categories</Label>
+            <Label>Categories <span className=' text-red-800'>Atlest 1</span></Label>
             <Select onValueChange={handleCategoryAdd}>
               <SelectTrigger>
-                <SelectValue placeholder="Select a category" />
+                <SelectValue placeholder="Select a category)" />
               </SelectTrigger>
               <SelectContent className='overflow-y-scroll max-h-screen'>
                 {isLoading?(<div>Loading...</div>) :(data?.sort((a, b) => a.name.localeCompare(b.name)).map(category => (
@@ -234,7 +234,7 @@ const {data:session,status}=useSession()
           </div>
         </div>
 
-        <Button className="w-full" onClick={handleSubmit}disabled={!formData.title || !formData.price || !formData.shortdescription }>Create Job</Button>
+        <Button className="w-full" onClick={handleSubmit}disabled={!formData.title || !formData.price || !formData.shortdescription || formData.categories.length()>0}>Create Job</Button>
       </div>
     </div>
   )

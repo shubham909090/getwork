@@ -1,9 +1,8 @@
 'use client'
+
 import { useDebounce } from "@uidotdev/usehooks";
 import { Input } from "@/components/ui/input"
-
 import { ScrollArea } from "@/components/ui/scroll-area"
-
 import { useQuery } from '@tanstack/react-query'
 import { searchJobs } from '@/app/server/serverUtils/jobs'
 import { useRouter } from 'next/navigation'
@@ -16,7 +15,7 @@ export default function HomeInput() {
   const debouncedSearchTerm = useDebounce(query, 300);
 
 
-  const { data, isLoading, error, isFetching } = useQuery({
+  const { data } = useQuery({
     queryKey: ['fetchjobs',debouncedSearchTerm], // Add selected categories as a part of the query key
     queryFn: () =>query.length>0 ? searchJobs(debouncedSearchTerm) :null,
   });
@@ -40,9 +39,7 @@ export default function HomeInput() {
           onChange={handleQueryChange}
           className="flex-grow border-none focus:ring-0 text-lg py-6 px-6 "
         />
-        {/* <Button className="rounded-r-full px-6 py-6" aria-label="Search">
-          <Search className="h-6 w-6" />
-        </Button> */}
+
       </div>
       {data && (
         <div className="absolute z-50 w-full mt-2 bg-background border border-border rounded-lg shadow-lg overflow-hidden transition-all duration-200 ease-in-out opacity-100 scale-100 origin-top ">

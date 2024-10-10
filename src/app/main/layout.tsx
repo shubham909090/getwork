@@ -4,14 +4,14 @@ import NavigationWraper from "../utils -components/header-footer/NavigationWrape
 
 
 
-export default function layout({ children }:{ children: React.ReactNode}) {
+export default function Layout({ children }:{children:React.ReactNode}) {
   return (
-    <>
 
-      <NavigationWraper />
-      {children}
-      <Footer />
-    
-    </>
+      <div>
+        <NavigationWraper />
+        {children}
+        <Footer />
+      </div>
+
   );
 }

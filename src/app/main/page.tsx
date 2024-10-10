@@ -1,6 +1,4 @@
 
-import { getAllCategories } from "../server/serverUtils/cat"
-import { getAvailableJobs } from "../server/serverUtils/jobs"
 import React from "react"
 
 import Home from "../utils -components/home-components/home-container"
