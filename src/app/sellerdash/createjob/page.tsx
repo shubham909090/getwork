@@ -234,7 +234,7 @@ const {data:session,status}=useSession()
           </div>
         </div>
 
-        <Button className="w-full" onClick={handleSubmit}disabled={!formData.title || !formData.price || !formData.shortdescription || formData.categories.length()>0}>Create Job</Button>
+        <Button className="w-full" onClick={handleSubmit}disabled={!formData.title || !formData.price || !formData.shortdescription || formData.categories.length <1}>Create Job</Button>
       </div>
     </div>
   )

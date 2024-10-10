@@ -90,11 +90,13 @@ export default function JobApplicationPage({ params }: { params: { slug: string 
             <CardContent className="space-y-4">
               <div className="flex items-center space-x-4">
                 <Avatar>
+                  {/* @ts-ignore */}
                   <AvatarImage src={data?.seller.image} alt={data?.seller.name} />
+                  {/* @ts-ignore */}
                   <AvatarFallback>{data?.seller.name.charAt(0)}</AvatarFallback>
                 </Avatar>
                 <div>
-                  <p className="font-semibold">{data.seller.name}</p>
+                  <p className="font-semibold">{data?.seller.name}</p>
                   <div className="flex items-center">
                     <CheckCircle className="mr-1 h-4 w-4 text-green-500" />
                     <span className="text-sm text-muted-foreground">Verified Seller</span>
