@@ -117,6 +117,7 @@ export const createTheJob =async(formdata:formdata,mail:string)=>{
         connect: { id: res.id },
       },
       categories: {
+        // @ts-ignore
         create: formdata.categories.map((categoryId) => ({
           category: { connect: { id: categoryId } },
         })),

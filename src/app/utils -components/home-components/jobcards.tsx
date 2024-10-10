@@ -132,7 +132,7 @@ function Jobcards() {
                   <span>Pune</span>
                 </div>
                 </div>
-                <Link href={`/job/${job.id}`}><Button className="w-full">Apply Now</Button></Link>
+                <Link href={`/main/job/${job.id}`}><Button className="w-full">Apply Now</Button></Link>
                 </div>
               </CardFooter>
             </Card>

@@ -104,7 +104,7 @@ const {data:session,status}=useSession()
       description: JSON.stringify(formData.description), // convert Tiptap JSON to string
       categories: formData.categories.map(cat => cat.id), // convert categories to array of IDs
     };
-
+  {/* @ts-ignore */}
    const res = await createTheJob(cleanFormData,session?.user?.email)
    if(res){
     setPopup({title:'Done',description:'New job created',visible:true})
@@ -192,7 +192,7 @@ const {data:session,status}=useSession()
           </div>
 
           <div>
-            <Label>Categories <span className=' text-red-800'>Atlest 1</span></Label>
+            <Label>Categories <span className=' text-red-800'>At least 1</span></Label>
             <Select onValueChange={handleCategoryAdd}>
               <SelectTrigger>
                 <SelectValue placeholder="Select a category)" />

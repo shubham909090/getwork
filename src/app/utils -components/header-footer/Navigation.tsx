@@ -32,7 +32,8 @@ const Navigation = () => {
         <Link href="#" className="text-sm font-medium hover:text-primary">Post a Job</Link>
         <Link href="#" className="text-sm font-medium hover:text-primary">How It Works</Link>
       </nav>
-      {session ? <Logout image={session.user?.image} /> : <Signin/>}
+      {/* @ts-ignore */}
+      {session ? <Logout image={session?.user?.image} /> : <Signin/>}
     </div>
   </header>
   )

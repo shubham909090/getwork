@@ -4,13 +4,22 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { CalendarDays, Clock, RefreshCw, DollarSign, CheckCircle, AlertCircle } from "lucide-react"
+import { Clock,  DollarSign, CheckCircle} from "lucide-react"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import { getajob } from "@/app/server/serverUtils/jobs"
 import RelatedJobs from "@/app/utils -components/jobpage/RelatedJobs"
+import TiptapRenderer from "@/app/utils -components/jobpage/tiptaprendrer"
 
 export default function JobApplicationPage({ params }: { params: { slug: string } }) {
   const slug = params.slug
+
+  const youtubeUrl = (url: string) => {
+    const videoId = url.match(
+        /(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/watch\?v=)([^&]+)/
+    )?.[1];
+    return videoId || ''; // Fallback to an empty string
+};
+
 
   const { data, isLoading, error, isFetching } = useQuery({
     queryKey: ['getJobitems'], // Add selected categories as a part of the query key
@@ -55,11 +64,15 @@ export default function JobApplicationPage({ params }: { params: { slug: string 
               <p>{data?.shortdescription}</p>
             </CardContent>
           </Card>
-          <Card className="mb-6">
-            <CardContent>
-              {JSON.stringify(data?.description)}
-            </CardContent>
-          </Card>
+          {data?.longurl && <Card className="mb-6 h-[500px]">
+
+            {data?.longurl ? <iframe className=' rounded-xl w-full h-full' src={`https://www.youtube.com/embed/${youtubeUrl(data.longurl)}?autoplay=0&mute=0&controls=1`} allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowFullScreen></iframe>: null} 
+   
+          </Card>}
+
+              {/* @ts-ignore */}
+            <TiptapRenderer savedContent={JSON.parse(data?.description)}  />
+ 
 
 
           <RelatedJobs cat={getCatArry()}></RelatedJobs>
