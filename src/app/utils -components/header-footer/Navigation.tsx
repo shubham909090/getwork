@@ -19,7 +19,7 @@ const Navigation = () => {
     </svg>
   </div>
   }
-  if(session){
+ 
   return (
     <header className="bg-white border-b">
     <div className="container mx-auto px-4 py-4 flex items-center justify-between">
@@ -33,11 +33,11 @@ const Navigation = () => {
         <Link href="#" className="text-sm font-medium hover:text-primary">How It Works</Link>
       </nav>
       {/* @ts-ignore */}
-      {session ? <Logout image={session?.user?.image} /> : <Signin/>}
+      {session ? <Logout image={session?.user?.image} name={session.user?.name} /> : <Signin/>}
     </div>
   </header>
   )
 }
-}
+
 
 export default Navigation

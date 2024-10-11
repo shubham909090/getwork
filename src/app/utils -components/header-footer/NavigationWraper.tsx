@@ -1,4 +1,4 @@
-'use client'
+
 
 
 import React from 'react'
@@ -8,9 +8,8 @@ import AuthProvider from '@/app/authprovider'
 
 function NavigationWraper() {
   return (
-<AuthProvider>
 <Navigation></Navigation>
-</AuthProvider>
+
   )
 }
 

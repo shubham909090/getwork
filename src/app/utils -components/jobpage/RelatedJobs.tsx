@@ -72,7 +72,7 @@ const { data} = useQuery({
                             <span>placeholder</span>
                             </div>
                             </div>
-                            <Link href={`/main/job/${job.id}`}><Button className="w-full">Apply Now</Button></Link>
+                            <a target='_blank' href={`/main/job/${job.id}`}><Button className="w-full">Apply Now</Button></a>
                             </div>
                         </CardFooter>
                         </Card>

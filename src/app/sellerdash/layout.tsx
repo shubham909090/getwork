@@ -14,7 +14,7 @@ export default function layout({ children }:{ children: React.ReactNode}) {
     
 
     return (
-<AuthProvider>
+
     <div className="flex h-screen bg-gray-100">
         
         <Sidebar></Sidebar>
@@ -27,7 +27,7 @@ export default function layout({ children }:{ children: React.ReactNode}) {
         </RecoilRoot>
         </QueryClientProvider>
     </div>
-</AuthProvider>
+
   
     );
   }

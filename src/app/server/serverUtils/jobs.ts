@@ -3,14 +3,13 @@
 import { redirect } from "next/navigation";
 import { prisma } from "../../../../db"
 import { JSONContent } from "@tiptap/react";
+import { error } from "console";
 
 
 export async function getAvailableJobs(page: number, limit: number) {
   const res = await prisma.job.findMany({
     where: {
-      applications: {
-        none: {}, // Exclude jobs that have any applications
-      },
+      taken: false,
     },
     skip: (page - 1) * limit, // Skip the previous pages
     take: limit,              // Fetch the specified limit
@@ -46,9 +45,7 @@ export async function getJobsByCategoryIds(categoryIds: number[], page: number, 
           },
         },
       },
-      applications: {
-        none: {}, // Exclude jobs with any applications
-      },
+      taken: false,
     },
     skip: (page - 1) * limit, // Skip the previous pages
     take: limit,              // Fetch the specified limit
@@ -139,7 +136,7 @@ export const searchJobs = async(query: string)=>{
       title: {
         contains: query,
         mode: 'insensitive', // Case insensitive search
-      },
+      }, taken:false,
     },
     select: {
       id: true,
@@ -158,9 +155,6 @@ export const getajob =async(jobId:number)=>{
     where: {
       id: jobId,
       taken: false,
-      applications: {
-        none: {}, // Ensures there are no applications for this job
-      },
     },
     include: {
       seller: {
@@ -185,6 +179,8 @@ export const getajob =async(jobId:number)=>{
 
   if(job){
     return job
+  }else{
+    throw new Error("User not found");
   }
 
 
