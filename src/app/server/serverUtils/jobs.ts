@@ -4,6 +4,7 @@ import { redirect } from "next/navigation";
 import { prisma } from "../../../../db"
 import { JSONContent } from "@tiptap/react";
 import { error } from "console";
+import { throws } from "assert";
 
 
 export async function getAvailableJobs(page: number, limit: number) {
@@ -70,10 +71,6 @@ export async function getJobsByCategoryIds(categoryIds: number[], page: number, 
 
   return jobs;
 }
-type TiptapJSON = {
-  type: string;
-  content?: Array<{ type: string; attrs?: Record<string, unknown>; content?: Array<TiptapJSON> }>
-}
 
 
 type Category = {
@@ -87,7 +84,7 @@ type formdata = {
   shortVideoLink: string,
   largeVideoLink: string,
   shortdescription:string,
-  description: JSONContent,
+  description: string,
   categories: Category[],
   price: string,
 }
@@ -223,4 +220,72 @@ export async function getRelatedJobs(categoryIds: number[]) {
   });
 
   return jobs;
+}
+export const fetchAllSellerOpenJobs = async (mail: string) => {
+  const res = await prisma.user.findUnique({
+    where: { email: mail, role: 'SELLER' },
+  });
+
+  if (!res?.id && res?.role !== 'SELLER') {
+    return {
+      success: false,
+      message: "Seller was not found, You are not a Seller or You may not have given your Email",
+      jobs: [],
+    };
+  }
+
+  const jobs = await prisma.job.findMany({
+    where: { sellerId: res.id, taken: false },
+    select: {
+      id: true,
+      sellerId: true,
+      title: true,
+      shorturl:true,
+      longurl:true,
+      shortdescription: true,
+      price: true,
+    },
+  });
+
+  return {
+    success: true,
+    jobs: jobs,
+  };
+};
+
+export const fetchjobDataForEdit=async(jobId:number)=>{
+  const job= await prisma.job.findUnique({where:{id:jobId}})
+
+  if(job?.taken===true){
+    return {success:false, message: "job is already taken by a user while you were editing, you can't edit it anymore"}
+  }
+  return {success:true, job}
+
+}
+type cleanFormData= {
+  description: string;
+  shortVideoLink: string;
+  largeVideoLink: string;
+  shortdescription: string;
+}
+
+export const updateJob = async(jobId:number, data:cleanFormData)=>{
+ const jobupdate = await prisma.job.update({
+  where: {
+   id:jobId
+  },
+  data: {
+    description:data.description,
+    shortdescription:data.shortdescription,
+    shorturl:data.shortVideoLink,
+    longurl:data.largeVideoLink
+  }
+})
+ if(jobupdate){
+  return{success:true,message:'Listing was updated'}
+ }else{
+  return{success:false,message:'Some issue while updating Plz contact DEV'}
+ }
+
+
 }

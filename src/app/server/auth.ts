@@ -12,12 +12,12 @@ export const logIn=async()=>{
 }
 
 export const SignUp =async()=>{
-    await signIn("google",{redirectTo:'/choose'})
+    await signIn("google",{redirectTo:'/signup/choose'})
 }
 
 export const logout =async()=>{
-    await signOut()
-    revalidatePath('/')
+    await signOut({redirect:true})
+    
     
 }
 

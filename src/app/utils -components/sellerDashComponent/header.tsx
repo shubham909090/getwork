@@ -21,8 +21,8 @@ const Header = () => {
       <h1 className="text-3xl font-bold text-gray-900">Welcome back, {session.user?.name}!</h1>
       <div className="flex items-center">
         <Avatar>
-          <AvatarImage src={session.user?.image} alt="@shadcn" />
-          <AvatarFallback>SD</AvatarFallback>
+          <AvatarImage src={session?.user?.image} alt="@shadcn" />
+          <AvatarFallback>{session?.user?.name[0].toLocaleUpperCase()}</AvatarFallback>
         </Avatar>
       </div>
     </div>

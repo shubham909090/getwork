@@ -17,12 +17,9 @@ import Text from "@tiptap/extension-text";
 import TextAlign from '@tiptap/extension-text-align';
 import '../sellerDashComponent/textediter.css'
 
-type TiptapJSON = {
-  type: string;
-  content?: Array<{ type: string; attrs?: Record<string, unknown>; content?: Array<TiptapJSON> }>
-}
 
-const TiptapRenderer = ({ savedContent }: { savedContent: TiptapJSON }) => {
+
+const TiptapRenderer = ({ savedContent }: { savedContent: string }) => {
 
   const editor = useEditor({
     extensions: [

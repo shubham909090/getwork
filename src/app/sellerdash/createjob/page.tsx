@@ -17,14 +17,6 @@ import { useSession } from 'next-auth/react'
 
 
 
-
-
-type TiptapJSON = {
-  type: string;
-  content?: Array<{ type: string; attrs?: Record<string, unknown>; content?: Array<TiptapJSON> }>
-}
-
-
 type Category = {
   id: number
   name: string
@@ -36,7 +28,7 @@ type formdata = {
   shortVideoLink: string,
   largeVideoLink: string,
   shortdescription:string,
-  description: TiptapJSON,
+  description: string,
   categories: Category[],
   price: number,
 }
@@ -47,10 +39,7 @@ export const formDatatom = atom<formdata>({
     shortVideoLink: '',
     largeVideoLink: '',
     shortdescription:'',
-    description: {
-      type: "doc",
-      content: []
-    },
+    description: '',
     categories: [],
     price: 0,
   }
@@ -101,7 +90,7 @@ const {data:session,status}=useSession()
   const handleSubmit = async() => {
     const cleanFormData = {
       ...formData,
-      description: JSON.stringify(formData.description), // convert Tiptap JSON to string
+      description: formData.description, // convert Tiptap JSON to string
       categories: formData.categories.map(cat => cat.id), // convert categories to array of IDs
     };
   {/* @ts-ignore */}
@@ -113,10 +102,7 @@ const {data:session,status}=useSession()
       shortVideoLink: '',
       largeVideoLink: '',
       shortdescription:'',
-      description: {
-        type: "doc",
-        content: []
-      },
+      description: '',
       categories: [],
       price: 0,
     })

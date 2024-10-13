@@ -53,16 +53,12 @@ const content = `
   — Mom
 </blockquote>
 `
-type TiptapJSON = {
-    type: string;
-    content?: Array<{ type: string; attrs?: Record<string, unknown>; content?: Array<TiptapJSON> }>
-  }
 const Tiptap = () => {
 
     const setState =useSetRecoilState(formDatatom)
 
-    const putInState= (json: TiptapJSON)=>{
-        setState(prev => ({...prev,description: {...json}}))
+    const putInState= (json: string)=>{
+        setState(prev => ({...prev,description:json}))
     }
 
 
@@ -108,7 +104,7 @@ const Tiptap = () => {
     autofocus: true,
     editable: true,
     onUpdate: ({ editor }) => {
-        const json = editor.getJSON() as TiptapJSON;
+        const json = editor.getHTML()
         putInState(json);
 }})
 

@@ -82,7 +82,7 @@ model Job {
   shorturl        String?
   longurl         String?
   shortdescription String
-  description     Json?
+  description     String?
   price           Float
   taken           Boolean
 

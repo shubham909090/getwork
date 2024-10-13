@@ -5,7 +5,7 @@ import Sidebar from '../utils -components/sellerDashComponent/sidebar'
 import Header from '../utils -components/sellerDashComponent/header'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { RecoilRoot } from 'recoil';
-import AuthProvider from '../authprovider';
+
 
 
 

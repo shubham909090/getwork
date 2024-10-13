@@ -1,6 +1,6 @@
 'use client'
 
-import { useEditor, EditorContent } from '@tiptap/react'
+import { useEditor, EditorContent, TiptapEditorHTMLElement } from '@tiptap/react'
 import Document from '@tiptap/extension-document';
 import Paragraph from '@tiptap/extension-paragraph';
 import BulletList from '@tiptap/extension-bullet-list';
@@ -19,50 +19,19 @@ import Text from "@tiptap/extension-text";
 import { Button } from '@/components/ui/button';
 import TextAlign from '@tiptap/extension-text-align';
 import { Bold as B, Italic as I, ListIcon, ListOrdered,AlignLeft,AlignCenter,Link as L,Code2Icon,LucideScanLine,QuoteIcon,LucideLink2Off, Link2Off } from 'lucide-react';
-import '../utils -components/sellerDashComponent/textediter.css'
+import './textediter.css'
 import { useSetRecoilState } from 'recoil';
-import { signUpStateatom } from './page';
+import { editForm } from '@/app/sellerdash/openlistings/page';
+import { useEffect } from 'react';
 
-const content = `
-<h2>
-  Hi there,
-</h2>
-<p>
-  this is a <em>basic</em> example of <strong>Tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
-</p>
-<ul>
-  <li>
-    That’s a bullet list with one …
-  </li>
-  <li>
-    … or two list items.
-  </li>
-</ul>
-<p>
-  Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
-</p>
-<pre><code class="language-css">body {
-  display: none;
-}</code></pre>
-<p>
-  I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
-</p>
-<blockquote>
-  Wow, that’s amazing. Good work, boy! 👏
-  <br />
-  — Mom
-</blockquote>
-`
-type TiptapJSON = {
-    type: string;
-    content?: Array<{ type: string; attrs?: Record<string, unknown>; content?: Array<TiptapJSON> }>
-  }
-const Tiptap = () => {
 
-    const setState =useSetRecoilState(signUpStateatom)
 
-    const putInState= (json: TiptapJSON)=>{
-        setState(prev => ({...prev,description: {...json}}))
+const Tiptap = ({content}:{content:string}) => {
+
+    const setState =useSetRecoilState(editForm)
+
+    const putInState= (html: string)=>{
+        setState(prev => ({...prev,description: html}))
     }
 
 
@@ -96,7 +65,7 @@ const Tiptap = () => {
         Bold, // Extension for bold text
         Italic, // Extension for italic text
       ],
-      immediatelyRender:false,
+      immediatelyRender:true,
       editorProps: {
         attributes: {
             style: "width: full; min-height: 300px; padding: 40px; box-sizing: border-box;",
@@ -104,13 +73,24 @@ const Tiptap = () => {
             "prose prose-sm sm:prose lg:prose-lg xl:prose-2xl m-5 border rounded-xl"
         }
       },
-    content: content,
+    content: content || <p></p>,
+    // onCreate({editor}) {
+    //   // if (editor.options.content !== content) {
+    //     editor.commands.setContent(content);
+    //   // }
+    // },
     autofocus: true,
     editable: true,
     onUpdate: ({ editor }) => {
-        const json = editor.getJSON() as TiptapJSON;
-        putInState(json);
+        const html = editor.getHTML()
+        putInState(html);
 }})
+// useEffect(() => {
+//   if (editor && content) {
+//     editor.commands.setContent(content);
+//   }
+// }, [content, editor]);
+console.log(content)
 
   if (!editor) {
     return null
@@ -148,7 +128,7 @@ const Tiptap = () => {
       </div>
 
       {/* Tiptap Editor */}
-      <div>
+      <div key={content}>
       <EditorContent editor={editor}/>
       </div>
 

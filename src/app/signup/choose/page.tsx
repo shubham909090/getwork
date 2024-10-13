@@ -30,13 +30,14 @@ export default function Component() {
         </svg>
       </div>
     }
+    console.log(session)
   return (
 
     <div className="container mx-auto px-4 py-8">
     <Popup title={popup.title} description={popup.description} visible={popup.visible} set={setPopup}/>
       <h1 className="text-2xl font-bold text-center mb-6">Choose Your Role</h1>
       <div className="grid md:grid-cols-2 gap-6">
-        <button onClick={()=>handlesubmit('SELLER',session?.user?.email)} disabled={session ? true : false} className="block">
+        <button onClick={()=>handlesubmit('SELLER',session?.user?.email)}  className="block">
           <Card className="h-full hover:shadow-lg transition-shadow">
             <CardContent className="flex flex-col items-center justify-center p-6 h-full">
               <Store className="w-16 h-16 mb-4 text-primary" />
@@ -47,7 +48,7 @@ export default function Component() {
             </CardContent>
           </Card>
         </button>
-        <button onClick={()=>router.push('/')} disabled={session ? true : false} className="block">
+        <button onClick={()=>router.push('/')}  className="block">
           <Card className="h-full hover:shadow-lg transition-shadow">
             <CardContent className="flex flex-col items-center justify-center p-6 h-full">
               <ShoppingCart className="w-16 h-16 mb-4 text-primary" />

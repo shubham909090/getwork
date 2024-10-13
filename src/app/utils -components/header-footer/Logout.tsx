@@ -3,6 +3,7 @@ import React from 'react'
 
 import { logout } from '@/app/server/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { signOut } from 'next-auth/react'
 
 const Logout = ({image,name}:{image:string,name:string}) => {
   return (
@@ -12,7 +13,7 @@ const Logout = ({image,name}:{image:string,name:string}) => {
       <AvatarImage src={image} alt="@shadcn" />
       <AvatarFallback>{name[0].toLocaleUpperCase()}</AvatarFallback>
     </Avatar>
-    <Button variant='default' onClick={async()=>await logout()}>Log Out</Button>
+    <Button variant='default' onClick={async()=>await signOut({redirectTo:'/'})}>Log Out</Button>
   </div>
   )
 }

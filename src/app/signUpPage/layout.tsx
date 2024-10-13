@@ -10,14 +10,12 @@ import AuthProvider from "../authprovider";
 export default function layout({ children }:{ children: React.ReactNode}) {
   return (
     <>
-    <AuthProvider>
+   
 <QueryClientProvider client={new QueryClient}>
 <RecoilRoot>
-
       {children}
-    </RecoilRoot>
+  </RecoilRoot>
 </ QueryClientProvider>
-</AuthProvider>
     </>
   );
 }

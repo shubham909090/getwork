@@ -42,7 +42,7 @@ const SellerDashMain = () => {
           <Card className="mb-8">
             <CardHeader>
               <div className="flex justify-between items-center">
-                <CardTitle>Active Listings</CardTitle>
+                <CardTitle>Open Listings</CardTitle>
                 <Link href='/sellerdash/createjob'><Button >
                       <PlusCircle className="mr-2 h-4 w-4" />
                       Create New Job
@@ -67,7 +67,7 @@ const SellerDashMain = () => {
               </div>
             </CardContent>
             <CardFooter>
-              <Button variant="outline">View All Listings</Button>
+              <Link href='/sellerdash/openlistings'><Button variant="outline">View All Listings</Button></Link>
             </CardFooter>
           </Card>
 

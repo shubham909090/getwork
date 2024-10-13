@@ -87,7 +87,7 @@ const { data: session, status } = useSession()
           </Card>}
 
               {/* @ts-ignore */}
-            <TiptapRenderer savedContent={JSON.parse(data?.description)}  />
+            <TiptapRenderer savedContent={data?.description}  />
  
 
 
