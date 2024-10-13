@@ -7,6 +7,7 @@ import { Button } from '@/components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Skeleton } from '@/components/ui/skeleton'
 import { Textarea } from '@/components/ui/textarea'
 import { useQuery } from '@tanstack/react-query'
 import { PencilIcon, PlusCircle, X } from 'lucide-react'
@@ -112,9 +113,129 @@ console.log(editData?.job?.description);
     //@ts-ignore
     setPopup({title:"error",description:data.message,visible:true})
   }
+if (isLoading){
+ return<div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+ <Card className="mb-8">
+         <CardHeader>
+           <div className="flex justify-between items-center">
+             <CardTitle>Open Listings</CardTitle>
+             <Link href='/sellerdash/createjob'><Button >
+                   <PlusCircle className="mr-2 h-4 w-4" />
+                   Create New Job
+             </Button>
+             </Link> 
+           </div>
+         </CardHeader>
+         <CardContent>
+           <div className="space-y-4">
+               <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                 <div>
+                   <Skeleton className=' h-4 w-32 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                 </div>
+                 <div className="text-right flex flex-row justify-between gap-5">
+                 <div><Skeleton className=' h-4 w-4 rounded-full' ></Skeleton></div> 
+                  <div> 
+                  <Skeleton className=' h-2 w-20 my-1' ></Skeleton>
+                  <Skeleton className=' h-2 w-20 my-1' ></Skeleton>
+                 </div>
+               </div>
+               </div>
+           </div>
+
+           <div className="space-y-4">
+               <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                 <div>
+                   <Skeleton className=' h-4 w-32 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                 </div>
+                 <div className="text-right flex flex-row justify-between gap-5">
+                 <div><Skeleton className=' h-4 w-4 rounded-full' ></Skeleton></div> 
+                  <div> 
+                  <Skeleton className=' h-2 w-20 my-1' ></Skeleton>
+                  <Skeleton className=' h-2 w-20 my-1' ></Skeleton>
+                 </div>
+               </div>
+               </div>
+           </div>
+
+
+           <div className="space-y-4">
+               <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
+                 <div>
+                   <Skeleton className=' h-4 w-32 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                   <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
+                 </div>
+                 <div className="text-right flex flex-row justify-between gap-5">
+                 <div><Skeleton className=' h-4 w-4 rounded-full' ></Skeleton></div> 
+                  <div> 
+                  <Skeleton className=' h-2 w-20 my-1' ></Skeleton>
+                  <Skeleton className=' h-2 w-20 my-1' ></Skeleton>
+                 </div>
+               </div>
+               </div>
+           </div>
+         </CardContent>
+       </Card>
+       </div>
+
+}
+if (isEditLoading){
+  return<div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
+  <div className=" w-full space-y-8 bg-card p-8 rounded-lg shadow">
+  <Skeleton className=' h-6 w-24 my-1' ></Skeleton>
+    <div className="space-y-4">
+      <div>
+        <Label htmlFor="title">Job Title</Label>
+        <Skeleton className=' h-8 w-full' ></Skeleton>
+      </div>
+
+      <div>
+        <Label htmlFor="shortVideoLink">Short Video Link</Label>
+        <Skeleton className=' h-8 w-full' ></Skeleton>
+      </div>
+
+      <div>
+        <Label htmlFor="largeVideoLink">Large Video Link</Label>
+        <Skeleton className=' h-8 w-full' ></Skeleton>
+      </div>
+
+      <div>
+        <Label htmlFor="shortdescription" className='texteditor'>Short Job Description</Label>
+        <Skeleton className=' h-8 w-full' ></Skeleton>
+      </div>
+
+      <div>
+        <Label htmlFor="description" className='texteditor'>Full Job Description</Label>
+
+        <div className="editor flex flex-col justify-between gap-5 border rounded-lg ">
+        {/* Toolbar with Button  variant={"secondary"}s */}
+        <div className=" flex flex-wrap  py-5 gap-5 justify-center">
+        <Skeleton className=' h-20 w-full' ></Skeleton>
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="price">Price</Label>
+        <Skeleton className=' h-8 w-full' ></Skeleton>
+      </div>
+    </div>
+</div>
+</div>
+</div>
+
+  
+}
+
   return ( edit ?
           
-    <div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
+    (<div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
     <Popup title={popup.title} description={popup.description} visible={popup.visible} set={setPopup}/>
     <div className=" w-full space-y-8 bg-card p-8 rounded-lg shadow">
     <Button onClick={handleClose}><X></X></Button>
@@ -187,11 +308,9 @@ console.log(editData?.job?.description);
       </div>
       <Button className="w-full" onClick={()=>handleSubmit(editData?.job?.id)} disabled={(formdata.shortdescription || editData?.job?.shortdescription)? false : true }>Update</Button>
     </div>
-  </div>
-
+  </div>)
   :
-
-  <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  (<div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <Popup title={popup.title} description={popup.description} visible={popup.visible} set={setPopup}/>
     <Card className="mb-8">
             <CardHeader>
@@ -223,8 +342,10 @@ console.log(editData?.job?.description);
               </div>
             </CardContent>
           </Card>
-          </div> 
+          </div>) 
   )
+
+
 }
 
 export default page
