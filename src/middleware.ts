@@ -14,13 +14,15 @@ export default async function middleware(request: NextRequest) {
     },
   });
   const data = await res.json();
+  if(data==="NONE"){
+    return NextResponse.redirect(new URL("/", request.url));
+  }
   const userRole = data?.role;
+
 
   const urlPath = request.nextUrl.pathname;
 
-  if(!userRole){
-    return NextResponse.redirect(new URL("/", request.url));
-  }
+
   if (urlPath.startsWith("/sellerdash") && userRole !== "SELLER") {
     
     return NextResponse.redirect(new URL("/", request.url));

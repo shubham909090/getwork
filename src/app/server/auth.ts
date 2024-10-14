@@ -124,28 +124,13 @@ export const checkRoleAndSetJob = async(mail: string, jobId: number)=>{
   }
 
 export async function getRoleByEmail(mail: string) {
+
     const user = await prisma.user.findUnique({where:{email:mail},select:{role:true}})
     if(user){
       return user.role
     }
-
   }
 
-  // export async function getRoleByEmailButton(mail: string) {
-  //   const user = await prisma.user.findUnique({where:{email:mail},select:{role:true}})
-
-      
-  //   if(user?.role ==="SELLER"){
-  //     redirect('/sellerdash')
-  //   }
-  //   if(user?.role==='USER'){
-      
-  //     redirect('/userdash')
-  //   }
-
-  //   }
-
-  
 
 
 
