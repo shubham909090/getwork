@@ -7,10 +7,34 @@ import React from 'react'
 import Signin from './signin'
 import { useSession } from 'next-auth/react'
 import Logout from './Logout'
+import { getRoleByEmail } from '@/app/server/auth'
+import { useRouter } from 'next/navigation'
+import { Button } from '@/components/ui/button';
+
+enum Role {
+  SELLER = "SELLER",
+  USER = "USER"
+}
+
 
 const Navigation = () => {
+  const router = useRouter()
 
   const { data: session, status } = useSession()
+
+  const handleClick =async(mail:string)=>{
+
+    const res = await getRoleByEmail(mail)
+
+    if(res ===Role.SELLER){
+      router.push('/sellerdash')
+    }
+    if(res ===Role.USER){
+      
+      router.push('/userdash')
+    }
+
+  }
 
   if(status==='loading'){
     return<div className="flex flex-col h-fit w-full justify-center items-center">
@@ -33,7 +57,7 @@ const Navigation = () => {
         <Link href="#" className="text-sm font-medium hover:text-primary">How It Works</Link>
       </nav>
       {/* @ts-ignore */}
-      {session ? <Logout image={session?.user?.image} name={session.user?.name} /> : <Signin/>}
+      {session ? <div className=' flex flex-row gap-5'><Logout image={session?.user?.image} name={session.user?.name} /><Button onClick={()=>handleClick(session.user?.email)}>Your Dashboard</Button></div> : <Signin/>}
     </div>
   </header>
   )

@@ -1,7 +1,5 @@
 import { Button } from '@/components/ui/button'
 import React from 'react'
-
-import { logout } from '@/app/server/auth'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { signOut } from 'next-auth/react'
 

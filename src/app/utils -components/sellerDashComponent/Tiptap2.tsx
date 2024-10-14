@@ -90,7 +90,6 @@ const Tiptap = ({content}:{content:string}) => {
 //     editor.commands.setContent(content);
 //   }
 // }, [content, editor]);
-console.log(content)
 
   if (!editor) {
     return null

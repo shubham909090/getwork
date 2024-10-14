@@ -2,7 +2,7 @@
 import Link from 'next/link'
 import React from 'react'
 import FooterUpperSect from './FooterUpperSect'
-import { auth } from '../../../../auth'
+import { auth } from '../../../auth'
 
 async function Footer() {
 

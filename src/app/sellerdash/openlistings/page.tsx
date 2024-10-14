@@ -48,16 +48,17 @@ export const editForm = atom<editForm>({
 
  const { data, isLoading, error } = useQuery({
     queryKey: ['fetchAllSellerOpenJobs',edit],
+        //@ts-ignore
     queryFn: () => fetchAllSellerOpenJobs(session?.user?.email),
   });
 
   const { data: editData, isLoading: isEditLoading, error: editError } = useQuery({
     queryKey: ['editListing'], // include job as part of the query key
+        //@ts-ignore
     queryFn: () => fetchjobDataForEdit(job),
     enabled: edit && job !== null, // only run when `edit` is true and `job` has a value
   });
 
-console.log(editData?.job?.description);
 
 
   const editclick=async(listingId:number)=>{
@@ -65,13 +66,7 @@ console.log(editData?.job?.description);
     setJob(listingId)
 
   }
-//  if(status ==='loading'){
-//     return<div className="flex flex-col h-screen w-full justify-center items-center">
-//     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="animate-spin">
-//       <path d="M21 12a9 9 0 1 1-6.219-8.56" />
-//     </svg>
-//   </div>
-//  }
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormdata(prev => ({ ...prev, [name]: value }))
@@ -93,6 +88,7 @@ console.log(editData?.job?.description);
       shortdescription:formdata.shortdescription? formdata.shortdescription :editData?.job?.shortdescription,
       description:formdata.description ? formdata.description : editData?.job?.description,
     };
+        //@ts-ignore
     const res = await updateJob(jobId,cleanFormData)
     if(res.success){
       setPopup({title:`${res.success}`,description:res.message,visible:true})
@@ -258,6 +254,7 @@ if (isEditLoading){
             name="shortVideoLink"
             value={formdata.shortVideoLink}
             onChange={handleInputChange}
+                //@ts-ignore
             placeholder={editData?.job?.shorturl}
           />
         </div>
@@ -269,6 +266,7 @@ if (isEditLoading){
             name="largeVideoLink"
             value={formdata.largeVideoLink}
             onChange={handleInputChange}
+                //@ts-ignore
             placeholder={editData?.job?.longurl}
           />
         </div>
@@ -290,6 +288,7 @@ if (isEditLoading){
           {isEditLoading ? (
           <div>Loading...</div>
         ) : (
+              //@ts-ignore
         <Tiptap2 key={`${job}-${editData?.job?.description}`} content={editData?.job?.description} />
 
         )}
@@ -306,6 +305,7 @@ if (isEditLoading){
           />
         </div>
       </div>
+      {/* @ts-ignore */}
       <Button className="w-full" onClick={()=>handleSubmit(editData?.job?.id)} disabled={(formdata.shortdescription || editData?.job?.shortdescription)? false : true }>Update</Button>
     </div>
   </div>)
@@ -344,8 +344,6 @@ if (isEditLoading){
           </Card>
           </div>) 
   )
-
-
 }
 
 export default page

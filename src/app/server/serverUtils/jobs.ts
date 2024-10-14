@@ -1,7 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { prisma } from "../../../../db"
+import { prisma } from "../../../db"
 import { JSONContent } from "@tiptap/react";
 import { error } from "console";
 import { throws } from "assert";
@@ -288,4 +288,34 @@ export const updateJob = async(jobId:number, data:cleanFormData)=>{
  }
 
 
+}
+
+export const fetchAllSellerActiveJobs=async(mail:string)=>{
+  const res = await prisma.user.findUnique({
+    where: { email: mail, role: 'SELLER' },
+  });
+
+  if (!res?.id && res?.role !== 'SELLER') {
+    return {
+      success: false,
+      message: "Seller was not found, You are not a Seller or You may not have given your Email",
+      jobs: [],
+    };
+  }
+  
+  const jobs = await prisma.job.findMany({
+    where: { sellerId: res.id, taken: true },
+    select: {
+      id: true,
+      sellerId: true,
+      title: true,
+      shortdescription: true,
+      price: true,
+    },
+  });
+
+  return {
+    success: true,
+    jobs: jobs,
+  };
 }
