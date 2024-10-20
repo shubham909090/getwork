@@ -319,3 +319,325 @@ export const fetchAllSellerActiveJobs=async(mail:string)=>{
     jobs: jobs,
   };
 }
+
+
+export const checkRoleAndSetJob = async(mail: string, jobId: number)=>{
+
+
+  return await prisma.$transaction(async (tx) => {
+    // Step 1: Check the role of the user
+    const user = await tx.user.findUnique({
+      where: { email: mail },
+      select: { role: true, id:true },
+    });
+
+    if (!user) {
+      throw new Error("User not found");
+    }
+
+    if (user.role === "SELLER") {
+      return {
+        success: false,
+        message: "Sellers can't take jobs",
+      };
+    
+    }
+
+    // Step 2: Check if the user already has a job assigned to them
+    const existingAssignedJob = await tx.job.findFirst({
+      where: {
+        acceptedUserId: user.id,
+      },
+    });
+
+    if (existingAssignedJob) {
+      return {
+        success: false,
+        message: "You already have a job assigned to you",
+      };
+    }
+
+    // Step 3: Check if the job is already taken or has an accepted user
+    const job = await tx.job.findUnique({
+      where: { id: jobId },
+      select: { taken: true, acceptedUserId: true },
+    });
+
+    if (!job) {
+      throw new Error("Job not found");
+    }
+
+    if (job.taken || job.acceptedUserId) {
+      return {
+        success: false,
+        message: "This job has already been taken by another user",
+      };
+    }
+
+    // Step 4: Create the Application and update the Job
+    const newApplication = await tx.application.create({
+      data: {
+        userId: user.id,
+        jobId: jobId,
+        status: "ACCEPTED",
+      },
+    });
+
+    await tx.job.update({
+      where: { id: jobId },
+      data: {
+        taken: true,
+        acceptedUserId: user.id,
+      },
+    });
+
+    return {
+      success: true,
+      message: "You have successfully been assigned to the job",
+    };
+  });
+}
+
+
+export const getUsersActiveJob=async(mail:string)=>{
+  const user = await prisma.user.findUnique({
+    where: { email: mail },
+    select: { id: true },
+  });
+  
+  const job = await prisma.job.findFirst({
+    where: {
+      acceptedUserId: user?.id,
+      taken: true,
+    },
+    select: {
+      id: true, // jobId
+      sellerId: true,
+      seller: {
+        select: {
+          name: true,
+        },
+      },
+      acceptedUserId: true,
+      title: true,
+      shortdescription: true,
+      price: true,
+      createdAt: true,
+      categories: {
+        include: {
+          category: true,
+        },
+      },
+      applications: {
+        where: {
+          userId: user?.id,
+        },
+        select: {
+          status: true,
+        },
+      },
+    },
+  });
+    
+  return job;
+
+  
+  }
+
+
+  export const getPastJobs = async (mail: string) => {
+    // Find the user by email to get the user ID
+    const user = await prisma.user.findUnique({
+      where: { email: mail },
+      select: { id: true },
+    });
+  
+    // Find all applications with status 'CLOSED' and include job details
+    const pastJobs = await prisma.application.findMany({
+      where: {
+        userId: user?.id,
+        status: 'COMPLETED',
+      },
+      include: {
+        job: {
+          select: {
+            id: true,
+            sellerId: true,
+            acceptedUserId: true,
+            title: true,
+            shortdescription: true,
+            price: true,
+            createdAt: true,
+            // Include seller's name
+            seller: {
+              select: {
+                name: true,
+              },
+            },
+            // Include job categories
+            categories: {
+              include: {
+                category: true,
+              },
+            },
+          },
+        },
+      },
+    });
+  
+    return pastJobs;
+  };
+
+
+export const getAllChatForActiveJobUser =async(userMail:string)=>{
+
+  const user = await prisma.user.findUnique({where:{
+    email:userMail
+  }})
+
+  if (!user) {
+    throw new Error('User not found');
+  }
+
+  const job = await prisma.job.findFirst({where:{
+    taken:true,
+    acceptedUserId:user?.id
+  },select:{
+    id:true,
+    seller:{
+      select:{
+        name:true
+      }
+    }
+  }})
+
+  if (!job) {
+    throw new Error('No ongoing job found for the user');
+  }
+  
+const conversationData = await prisma.application.findFirst({
+  where: {
+    userId: user?.id,
+    jobId: job?.id
+  },
+  select: {
+    id: true,
+    status: true, // Include the application status here
+    messages: {
+      orderBy: {
+        createdAt: 'asc',
+      },
+      select: {
+        id: true,
+        content: true,
+        senderId: true,
+        createdAt: true,
+        sender: {
+          select: {
+            name: true,
+            role: true,
+          },
+        },
+      },
+    },
+    statusHistory: {
+      orderBy: {
+        changedAt: 'asc',
+      },
+      select: {
+        id: true,
+        status: true,
+        changedAt: true,
+        changedById: true,
+        changedBy: {
+          select: {
+            name: true,
+            role: true,
+          },
+        },
+      },
+    },
+  },
+});
+
+
+
+  const timelineEvents = [
+    // Step 1: Map messages to the unified structure
+    ...conversationData.messages.map((message) => ({
+      id:message.id,
+      type: "message",
+      timestamp: new Date(message.createdAt),  // Message timestamp
+      content: message.content,
+      sender: message.sender,
+    })),
+    
+    // Step 2: Map status changes to the unified structure
+    ...conversationData.statusHistory.map((statusChange) => ({
+      id:statusChange.id,
+      type: "statusChange",
+      timestamp: new Date(statusChange.changedAt),  // Status change timestamp
+      status: statusChange.status,
+      sender: statusChange.changedBy,
+    })),
+  ];
+
+  timelineEvents.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+
+// Step 4: Now you can return or render the sorted timeline
+return {userId:user.id, sellerName:job.seller.name, jobStatus:conversationData?.status,chatContent:timelineEvents, applicationId:conversationData?.id};
+  
+  
+}
+
+export const createEntryForChatOrStatus = async (data: {
+  type: "message" | "statusChange";
+  content?: string; // Only for messages
+  status?: "IN_PROGRESS" | "UNDER_REVIEW"; // Only for status changes
+  sender: string; // Sender's ID
+  applicationId: number; // Application's ID
+}) => {
+  const { type, content, status, sender, applicationId } = data;
+
+  if (type === "message") {
+    // Create a message entry
+    if (!content) {
+      throw new Error("Content is required for a message.");
+    }
+
+    const newMessage = await prisma.message.create({
+      data: {
+        content: content,
+        senderId: sender, // Sender's ID
+        applicationId: applicationId, // Associated application
+      },
+    });
+
+
+  } else if (type === "statusChange") {
+    // Create a status change history entry
+    if (!status) {
+      throw new Error("Status is required for a status change.");
+    }
+
+    const newStatusChange = await prisma.statusHistory.create({
+      data: {
+        status: status,
+        changedById: sender, // Sender's ID
+        applicationId: applicationId, // Associated application
+      },
+    });
+    const applicationStatusChange = await prisma.application.update({
+      where:{
+        id:applicationId,
+      },data:{
+        status:status
+      }
+    })
+
+  
+  } else {
+    throw new Error("Invalid type. Must be 'message' or 'statusChange'.");
+  }
+
+};

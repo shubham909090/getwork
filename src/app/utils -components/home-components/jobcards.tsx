@@ -31,6 +31,7 @@ function Jobcards() {
     queryFn: () =>selectedcat.length > 0 ? getJobsByCategoryIds(selectedcat,page,10) : getAvailableJobs(page,10),
     enabled: !!selectedcat,// Ensures the query only runs if selectedcat is available
     placeholderData:keepPreviousData,
+    refetchOnWindowFocus: false
   });
 
   const loadMore = () => {

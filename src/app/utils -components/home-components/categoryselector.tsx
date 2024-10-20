@@ -20,6 +20,7 @@ export function Categoryselector() {
   const { data, isLoading, error } = useQuery({
     queryKey: ['fetchcategories'],
     queryFn: () => getAllCategories(),
+    refetchOnWindowFocus: false
   });
 
 

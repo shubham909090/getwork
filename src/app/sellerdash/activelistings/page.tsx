@@ -19,6 +19,7 @@ const page = () => {
     const { data, isLoading, error } = useQuery({
         queryKey: ['fetchAllSellerActiveJobs'],
         queryFn: () => fetchAllSellerActiveJobs(session?.user?.email),
+        refetchOnWindowFocus: false
       });
 
     const editclick =(jobId:number)=>{

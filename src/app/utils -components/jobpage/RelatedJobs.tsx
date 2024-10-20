@@ -16,6 +16,7 @@ const { data} = useQuery({
     queryKey: ['getRelatedJobs'], // Add selected categories as a part of the query key
     queryFn: () => getRelatedJobs(cat),
     placeholderData:keepPreviousData,
+    refetchOnWindowFocus: false
   });
   const youtubeUrl = (url: string) => {
     const videoId = url.match(

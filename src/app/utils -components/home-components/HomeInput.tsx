@@ -18,6 +18,7 @@ export default function HomeInput() {
   const { data } = useQuery({
     queryKey: ['fetchjobs',debouncedSearchTerm], // Add selected categories as a part of the query key
     queryFn: () =>query.length>0 ? searchJobs(debouncedSearchTerm) :null,
+    refetchOnWindowFocus: false
   });
 
   const handleQueryChange = (e: React.ChangeEvent<HTMLInputElement>) => {

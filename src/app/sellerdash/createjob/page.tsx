@@ -57,6 +57,7 @@ const {data:session,status}=useSession()
   const { data, isLoading, error } = useQuery({
     queryKey: ['fetchcategories'],
     queryFn: () => getAllCategories(),
+    refetchOnWindowFocus: false
   });
 
   const [popup, setPopup]= useState({title:'',description:'',visible:false})

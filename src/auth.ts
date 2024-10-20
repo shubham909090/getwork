@@ -17,4 +17,5 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
     error:'/',
     verifyRequest:'/'
   },
+  secret:process.env.AUTH_SECRET
 });

@@ -50,6 +50,7 @@ export const editForm = atom<editForm>({
     queryKey: ['fetchAllSellerOpenJobs',edit],
         //@ts-ignore
     queryFn: () => fetchAllSellerOpenJobs(session?.user?.email),
+    refetchOnWindowFocus: false
   });
 
   const { data: editData, isLoading: isEditLoading, error: editError } = useQuery({
@@ -57,6 +58,7 @@ export const editForm = atom<editForm>({
         //@ts-ignore
     queryFn: () => fetchjobDataForEdit(job),
     enabled: edit && job !== null, // only run when `edit` is true and `job` has a value
+    refetchOnWindowFocus: false
   });
 
 

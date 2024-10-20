@@ -6,18 +6,19 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Clock,  DollarSign, CheckCircle} from "lucide-react"
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
-import { getajob } from "@/app/server/serverUtils/jobs"
+import { checkRoleAndSetJob, getajob } from "@/app/server/serverUtils/jobs"
 import RelatedJobs from "@/app/utils -components/jobpage/RelatedJobs"
 import TiptapRenderer from "@/app/utils -components/jobpage/tiptaprendrer"
-import { checkRoleAndSetJob } from "@/app/server/auth"
+
 import { useSession } from "next-auth/react"
 import { useState } from "react"
 import Popup from "@/app/utils -components/popup"
+import { useRouter } from "next/navigation"
 
 export default function JobApplicationPage({slug}:{slug:string}) {
   const [clicked, setClicke] = useState(false)
   const [popup, setPopup]= useState({title:'',description:'',visible:false})
-
+  const router = useRouter()
 
   const youtubeUrl = (url: string) => {
     const videoId = url.match(
@@ -32,6 +33,7 @@ const { data: session, status } = useSession()
     queryKey: ['getJobitems'], // Add selected categories as a part of the query key
     queryFn: () => getajob(parseInt(slug)),
     placeholderData:keepPreviousData,
+    refetchOnWindowFocus: false
   });
 
   const getCatArry=()=>{
@@ -43,12 +45,18 @@ const { data: session, status } = useSession()
   }
 
   const handleApply =async(mail:string,jobId:number)=>{
+    if(!session?.user?.email){
+      router.push('/signup')
+      return
+    }
     setClicke(true)
     const res = await checkRoleAndSetJob(mail,jobId)
     setPopup({title:`${res.success}`,description:res.message,visible:true})
+    if (res.success===true){
+      router.push('/userdash')
+    }
     setClicke(false)
   }
-  console.log(session,slug)
 
   if(error){
     return<div className=" flex flex-col items-center  justify-center h-screen w-full">Somthing went wrong</div>
@@ -109,7 +117,7 @@ const { data: session, status } = useSession()
                 <Clock className="mr-2 h-4 w-4 opacity-70" />
                 <span> Created At {data?.createdAt.getDay()} {data?.createdAt.getMonth()} {data?.createdAt.getFullYear()}</span>
               </div>
-              <Button className="w-full" onClick={()=>handleApply(session?.user?.email,data?.id)} disabled={!session?.user?.email || clicked}>{clicked ? 'Loading...' : 'Apply Now'}</Button>
+              <Button className="w-full" onClick={()=>handleApply(session?.user?.email,data?.id)} disabled={ clicked}>{clicked ? 'Loading...' : 'Apply Now'}</Button>
             </CardContent>
           </Card>
           <Card>

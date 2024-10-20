@@ -3,7 +3,7 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import React, { Children } from "react";
 import { RecoilRoot } from "recoil";
-import AuthProvider from "../authprovider";
+import AuthProvider from "../../authprovider";
 
 
 

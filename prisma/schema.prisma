@@ -53,6 +53,10 @@ model Account {
   // Users can be accepted to a job
   acceptedJobs    Job[]        @relation("AcceptedUserJobs")
   
+
+  Message Message[]
+  StatusHistory StatusHistory[]
+  
   @@map("users")
 }
 
@@ -130,8 +134,33 @@ model Application {
   userId     String
   user       User       @relation(fields: [userId], references: [id])
 
+  messages      Message[]      // Each application has multiple messages
+  statusHistory StatusHistory[] // Each application has multiple status changes
+
   @@unique([jobId, userId])  // Ensures a user can apply only once to a job
 }
+model Message {
+  id            Int          @id @default(autoincrement())
+  content       String       @db.Text
+  senderId      String
+  sender        User         @relation(fields: [senderId], references: [id])
+  applicationId Int
+  application   Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  createdAt     DateTime     @default(now())
+
+  @@index([applicationId])
+}
+
+model StatusHistory {
+  id            Int          @id @default(autoincrement())
+  status        Status
+  changedAt     DateTime     @default(now())
+  applicationId Int
+  application   Application  @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  changedById   String
+  changedBy     User         @relation(fields: [changedById], references: [id])
+}
+
 
 enum Role {
   USER
@@ -143,6 +172,10 @@ enum Status {
   OPEN
   PENDING
   CLOSED
-  ACCEPTED  // Indicates that the application has been accepted and the user is assigned to the job
-  REJECTED  // Indicates the user has been rejected from the job
+  ACCEPTED
+  REJECTED
+  IN_PROGRESS  // New status indicating active work
+  UNDER_REVIEW
+  REVISION // New status if the seller is reviewing completed work
+  COMPLETED    // Indicates the job is completed successfully
 }
