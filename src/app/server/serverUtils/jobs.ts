@@ -311,8 +311,29 @@ export const fetchAllSellerActiveJobs=async(mail:string)=>{
       title: true,
       shortdescription: true,
       price: true,
+      acceptedUserId: true,
+      categories:{
+        select:{
+          categoryId:true,
+          category:true
+        }
+      },
+      applications: {
+        select: {
+          id: true,
+          status: true,
+          appliedAt: true,
+          user: {
+            select: {
+              id: true,
+              name: true,
+            },
+          },
+        },
+      },
     },
   });
+
 
   return {
     success: true,
@@ -390,6 +411,13 @@ export const checkRoleAndSetJob = async(mail: string, jobId: number)=>{
         acceptedUserId: user.id,
       },
     });
+     await tx.statusHistory.create({
+      data: {
+        applicationId:newApplication.id,
+        changedById:user.id,
+        status:'ACCEPTED'
+      }
+    })
 
     return {
       success: true,
@@ -593,7 +621,7 @@ return {userId:user.id, sellerName:job.seller.name, jobStatus:conversationData?.
 export const createEntryForChatOrStatus = async (data: {
   type: "message" | "statusChange";
   content?: string; // Only for messages
-  status?: "IN_PROGRESS" | "UNDER_REVIEW"; // Only for status changes
+  status?: "IN_PROGRESS" | "UNDER_REVIEW" |"PENDING"|"REVISION"|"REJECTED"|"COMPLETED"; // Only for status changes
   sender: string; // Sender's ID
   applicationId: number; // Application's ID
 }) => {
@@ -641,3 +669,107 @@ export const createEntryForChatOrStatus = async (data: {
   }
 
 };
+
+
+
+export const getAllChatForActiveJobSeller =async(userMail:string,appid:number)=>{
+
+  const user = await prisma.user.findUnique({where:{
+    email:userMail
+  }})
+
+  if (!user) {
+    throw new Error('User not found ');
+  }
+  if (user.role==='USER') {
+    throw new Error('youre not a seller??? ');
+  }
+  // const job = await prisma.job.findFirst({where:{
+  //   taken:true,
+  //   acceptedUserId:user?.id
+  // },select:{
+  //   id:true,
+  //   seller:{
+  //     select:{
+  //       name:true
+  //     }
+  //   }
+  // }})
+
+  // if (!job) {
+  //   throw new Error('No ongoing job found for the user');
+  // }
+  
+const conversationData = await prisma.application.findUnique({
+  where: {
+    id:appid
+  },
+  select: {
+    id: true,
+    status: true, // Include the application status here
+    messages: {
+      orderBy: {
+        createdAt: 'asc',
+      },
+      select: {
+        id: true,
+        content: true,
+        senderId: true,
+        createdAt: true,
+        sender: {
+          select: {
+            name: true,
+            role: true,
+          },
+        },
+      },
+    },
+    statusHistory: {
+      orderBy: {
+        changedAt: 'asc',
+      },
+      select: {
+        id: true,
+        status: true,
+        changedAt: true,
+        changedById: true,
+        changedBy: {
+          select: {
+            name: true,
+            role: true,
+          },
+        },
+      },
+    },
+  },
+});
+
+
+
+  const timelineEvents = [
+    // Step 1: Map messages to the unified structure
+    ...conversationData.messages.map((message) => ({
+      id:message.id,
+      type: "message",
+      timestamp: new Date(message.createdAt),  // Message timestamp
+      content: message.content,
+      sender: message.sender,
+    })),
+    
+    // Step 2: Map status changes to the unified structure
+    ...conversationData.statusHistory.map((statusChange) => ({
+      id:statusChange.id,
+      type: "statusChange",
+      timestamp: new Date(statusChange.changedAt),  // Status change timestamp
+      status: statusChange.status,
+      sender: statusChange.changedBy,
+    })),
+  ];
+
+  timelineEvents.sort((a, b) => a.timestamp.getTime() - b.timestamp.getTime());
+
+// Step 4: Now you can return or render the sorted timeline
+return {userId:user.id, jobStatus:conversationData?.status,chatContent:timelineEvents};
+  
+  
+}

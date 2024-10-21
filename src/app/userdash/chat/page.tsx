@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { MessageCircle, CheckCircle2, Clock, Send } from "lucide-react";
+import { MessageCircle, CheckCircle2, Clock, Send, TimerResetIcon, ClockArrowDownIcon, ArrowRightCircleIcon, AlarmCheckIcon, Clock3Icon, RefreshCcw } from "lucide-react";
 import { createEntryForChatOrStatus, getAllChatForActiveJobUser } from "@/app/server/serverUtils/jobs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useSession } from "next-auth/react";
@@ -15,13 +15,24 @@ type Sender = {
 };
 
 const statusIcons = {
-  IN_PROGRESS: <Clock className="h-5 w-5 text-yellow-500" />,
-  UNDER_REVIEW: <CheckCircle2 className="h-5 w-5 text-green-500" />,
+  IN_PROGRESS: <Clock3Icon className="h-5 w-5 text-yellow-500" />,
+  UNDER_REVIEW: <Clock className="h-5 w-5 text-blue-500" />,
+  PENDING: <Clock className="h-5 w-5 text-yellow-500" />,
+  REVISION: <TimerResetIcon className="h-5 w-5 text-purple-400" />,
+  REJECTED: <ClockArrowDownIcon className="h-5 w-5 text-red-400" />,
+  COMPLETED: <ArrowRightCircleIcon className="h-5 w-5 text-green-700" />,
+  ACCEPTED : <AlarmCheckIcon className="h-5 w-5 text-green-700" />
 };
 
 const statusLabels = {
   IN_PROGRESS: "In Progress",
   UNDER_REVIEW: "Give For Review",
+  PENDING : 'Pending work',
+  // CLOSED
+  REJECTED : 'No expected retrun',
+  REVISION : 'Need a revision',
+  COMPLETED : 'Done !',
+  ACCEPTED : 'Accepted'
 };
 
 export default function Component({ currentUser = { name: "", role: "USER" } }: { currentUser?: Sender }) {
@@ -117,6 +128,10 @@ export default function Component({ currentUser = { name: "", role: "USER" } }: 
     return new Date(timestamp).toLocaleString();
   };
 
+  const handleRefresh =()=>{
+    queryClient.invalidateQueries({ queryKey: ['getAllChatForActiveJobUser'] });
+  }
+
   if (isLoading || isFetching || status === "loading" || mutation.isPending) {
     return (
       <div className="flex flex-col h-screen w-full justify-center items-center">
@@ -142,7 +157,10 @@ export default function Component({ currentUser = { name: "", role: "USER" } }: 
     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
       <div className="flex flex-col h-[600px] max-w-4xl mx-auto border rounded-lg shadow-lg">
         <div className="p-4 border-b">
+        <div className=" flex justify-between">
           <h2 className="text-2xl font-bold">Job Timeline</h2>
+          <Button onClick={handleRefresh}><RefreshCcw /></Button>
+          </div>
           <div className="flex items-center mt-2">
             <span className="mr-2">Current Status:</span>
             {statusIcons[data?.jobStatus]}

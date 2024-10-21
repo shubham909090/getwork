@@ -174,8 +174,8 @@ enum Status {
   CLOSED
   ACCEPTED
   REJECTED
-  IN_PROGRESS  // New status indicating active work
+  IN_PROGRESS  
   UNDER_REVIEW
-  REVISION // New status if the seller is reviewing completed work
-  COMPLETED    // Indicates the job is completed successfully
+  REVISION 
+  COMPLETED    
 }

@@ -1,17 +1,10 @@
 'use client'
 
-import { fetchAllSellerActiveJobs } from '@/app/server/serverUtils/jobs';
-import Popup from '@/app/utils -components/popup';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
-import { Skeleton } from '@/components/ui/skeleton';
-import { useQuery } from '@tanstack/react-query';
-import { MessageCircleMore, PlusCircle } from 'lucide-react';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { ChevronDown, ChevronUp, DollarSign, MessageSquare, Clock } from 'lucide-react'
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 interface Category {
@@ -67,7 +60,6 @@ const StatusBadge = ({ status }: { status: string }) => {
   )
 }
 
-
 const JobCard: React.FC<JobCardProps> = ({ job }) => {
   const [isExpanded, setIsExpanded] = useState(false)
 
@@ -99,6 +91,7 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
       <CardContent>
         <div className="flex justify-between items-center mb-4">
           <div className="flex items-center">
+            <DollarSign className="h-5 w-5 text-green-500 mr-1" />
             <span className="font-semibold">${job.price}</span>
           </div>
           <div className="flex flex-wrap gap-2">
@@ -128,10 +121,10 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
                       <span>Accepted for this job</span>
                     </div>
                   )}
-                  <Link href={`/sellerdash/chat?id=${app.id}`}><Button variant="outline" size="sm" className="w-full">
+                  <Button variant="outline" size="sm" className="w-full">
                     <MessageSquare className="h-4 w-4 mr-2" />
                     Chat
-                  </Button></Link>
+                  </Button>
                 </CardContent>
               </Card>
             ))}
@@ -142,66 +135,14 @@ const JobCard: React.FC<JobCardProps> = ({ job }) => {
   )
 }
 
-
-
-const page = () => {
-    const [popup, setPopup]= useState({title:'',description:'',visible:false})
+export default function Component() {
     
-    const {data:session, status}=useSession()
-
-    const { data, isLoading, error } = useQuery({
-        queryKey: ['fetchAllSellerActiveJobs'],
-        queryFn: () => fetchAllSellerActiveJobs(session?.user?.email),
-        refetchOnWindowFocus: false
-      });
-
-
-    const editclick =(jobId:number)=>{
-        //Open the chat / see the past activitis
-    }
-    if (isLoading){ 
-        return<div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
-        <Card className="mb-8">
-                <CardHeader>
-                  <div className="flex justify-between items-center">
-                    <CardTitle>Active Listings</CardTitle>
-                  </div>
-                </CardHeader>
-                <CardContent>
-                  <div className="space-y-4">
-                      <div className="flex justify-between items-center p-4 bg-gray-50 rounded-lg">
-                        <div>
-                          <Skeleton className=' h-4 w-32 my-1' ></Skeleton>
-                          <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
-                          <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
-                          <Skeleton className=' h-2  w-72 my-1' ></Skeleton>
-                        </div>
-                        <div className="text-right flex flex-row justify-between gap-5">
-                        <div><Skeleton className=' h-4 w-4 rounded-full' ></Skeleton></div> 
-                         <div> 
-                         <Skeleton className=' h-2 w-20 my-1' ></Skeleton>
-                         <Skeleton className=' h-2 w-20 my-1' ></Skeleton>
-                        </div>
-                      </div>
-                      </div>
-                  </div>
-                </CardContent>
-              </Card>
-              </div>
-       
-       }
-    if(data?.success===false){
-      setPopup({title:"false",description:data?.message,visible:true})
-    }
   return (
-
     <div className="p-6 bg-muted min-h-screen">
-      <Popup title={popup.title} description={popup.description} visible={popup.visible} set={setPopup}/>
-      {data?.jobs.map((job) => (
+      <h1 className="text-3xl font-bold mb-6 text-center">Job Listings</h1>
+      {jobs.map((job) => (
         <JobCard key={job.id} job={job} />
       ))}
     </div>
-    ) 
+  )
 }
-
-export default page
