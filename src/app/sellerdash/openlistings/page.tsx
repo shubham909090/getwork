@@ -231,9 +231,7 @@ if (isEditLoading){
   
 }
 
-  return ( edit ?
-          
-    (<div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
+  return (edit ? (<div className="min-h-screen flex items-center justify-center p-4 bg-gray-100">
     <Popup title={popup.title} description={popup.description} visible={popup.visible} set={setPopup}/>
     <div className=" w-full space-y-8 bg-card p-8 rounded-lg shadow">
     <Button onClick={handleClose}><X></X></Button>
@@ -291,7 +289,7 @@ if (isEditLoading){
           <div>Loading...</div>
         ) : (
               //@ts-ignore
-        <Tiptap2 key={`${job}-${editData?.job?.description}`} content={editData?.job?.description} />
+        (<Tiptap2 key={`${job}-${editData?.job?.description}`} content={editData?.job?.description} />)
 
         )}
         </div>
@@ -310,9 +308,7 @@ if (isEditLoading){
       {/* @ts-ignore */}
       <Button className="w-full" onClick={()=>handleSubmit(editData?.job?.id)} disabled={(formdata.shortdescription || editData?.job?.shortdescription)? false : true }>Update</Button>
     </div>
-  </div>)
-  :
-  (<div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+  </div>) : (<div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
     <Popup title={popup.title} description={popup.description} visible={popup.visible} set={setPopup}/>
     <Card className="mb-8">
             <CardHeader>
@@ -344,8 +340,7 @@ if (isEditLoading){
               </div>
             </CardContent>
           </Card>
-          </div>) 
-  )
+  </div>));
 }
 
 export default page
