@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { ScrollArea } from "@/components/ui/scroll-area";
 import { MessageCircle, CheckCircle2, Clock, Send, TimerResetIcon, ClockArrowDownIcon, ArrowRightCircleIcon, AlarmCheckIcon, Clock3Icon, RefreshCcw } from "lucide-react";
 import { createEntryForChatOrStatus, getAllChatForActiveJobUser } from "@/app/server/serverUtils/jobs";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";

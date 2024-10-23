@@ -20,15 +20,14 @@ import { Button } from '@/components/ui/button';
 import TextAlign from '@tiptap/extension-text-align';
 import { Bold as B, Italic as I, ListIcon, ListOrdered,AlignLeft,AlignCenter,Link as L,Code2Icon,LucideScanLine,QuoteIcon,LucideLink2Off, Link2Off } from 'lucide-react';
 import './textediter.css'
-import { useSetRecoilState } from 'recoil';
 import { editForm } from '@/app/sellerdash/openlistings/page';
-import { useEffect } from 'react';
+import { useSetAtom } from 'jotai';
 
 
 
 const Tiptap = ({content}:{content:string}) => {
 
-    const setState =useSetRecoilState(editForm)
+    const setState =useSetAtom(editForm)
 
     const putInState= (html: string)=>{
         setState(prev => ({...prev,description: html}))

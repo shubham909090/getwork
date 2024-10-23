@@ -10,11 +10,12 @@ import { Label } from '@/components/ui/label'
 import { Skeleton } from '@/components/ui/skeleton'
 import { Textarea } from '@/components/ui/textarea'
 import { useQuery } from '@tanstack/react-query'
+import { atom, useAtom } from 'jotai'
 import { PencilIcon, PlusCircle, X } from 'lucide-react'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import React, { useEffect, useState } from 'react'
-import { atom, useRecoilState } from 'recoil'
+
 
 
 
@@ -26,13 +27,11 @@ type editForm = {
 
 }
 export const editForm = atom<editForm>({
-  key:"editForm",
-  default:{
     shortVideoLink: '',
     largeVideoLink: '',
     shortdescription:'',
     description: '',
-  }
+  
 })
 
  const page = () => {
@@ -41,7 +40,7 @@ export const editForm = atom<editForm>({
  const [job, setJob] = useState<number | null>(null);
  const [popup, setPopup]= useState({title:'',description:'',visible:false})
 
- const [formdata, setFormdata]= useRecoilState(editForm)
+ const [formdata, setFormdata]= useAtom(editForm)
 
  const {data:session, status}=useSession()
 

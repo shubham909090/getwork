@@ -11,9 +11,10 @@ import Popup from '@/app/utils -components/popup'
 import { Textarea } from '@/components/ui/textarea'
 import { getAllCategories } from '@/app/server/serverUtils/cat'
 import { useQuery } from '@tanstack/react-query'
-import { atom, useRecoilState } from 'recoil'
+
 import { createTheJob } from '@/app/server/serverUtils/jobs'
 import { useSession } from 'next-auth/react'
+import { atom, useAtom } from 'jotai'
 
 
 
@@ -33,8 +34,6 @@ type formdata = {
   price: number,
 }
 export const formDatatom = atom<formdata>({
-  key:"formdata",
-  default:{
     title: '',
     shortVideoLink: '',
     largeVideoLink: '',
@@ -43,7 +42,7 @@ export const formDatatom = atom<formdata>({
     categories: [],
     price: 0,
   }
-})
+)
 // Mock categories - replace with your actual categories
 
 
@@ -64,7 +63,7 @@ const {data:session,status}=useSession()
 
 
 
-  const [formData, setFormData] = useRecoilState(formDatatom)
+  const [formData, setFormData] = useAtom(formDatatom)
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target

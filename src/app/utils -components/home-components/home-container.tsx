@@ -3,9 +3,9 @@
 import React from 'react'
 import Categoryselector from './categoryselector'
 import Jobcards from './jobcards'
-import { atom, RecoilRoot, useRecoilValue, useSetRecoilState } from 'recoil'
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
 import HomeInput from './HomeInput'
+import { Providers } from '../stateProvider'
 
 
 
@@ -16,7 +16,7 @@ const Home = () => {
 
   return (
     <QueryClientProvider client={new QueryClient}>
-    <RecoilRoot>
+    <Providers>
     <main className="flex-grow ">
     <section className="bg-gradient-to-r from-primary to-primary-foreground text-white py-20">
       <div className="container mx-auto px-4 text-center">
@@ -30,7 +30,7 @@ const Home = () => {
     </section>
     <Jobcards />
     </main>
-  </RecoilRoot>
+  </Providers>
   </QueryClientProvider>
   )
 }

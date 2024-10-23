@@ -292,7 +292,7 @@ export const updateJob = async(jobId:number, data:cleanFormData)=>{
 
 export const fetchAllSellerActiveJobs=async(mail:string)=>{
   const res = await prisma.user.findUnique({
-    where: { email: mail, role: 'SELLER' },
+    where: { email: mail },
   });
 
   if (!res?.id && res?.role !== 'SELLER') {
@@ -331,6 +331,8 @@ export const fetchAllSellerActiveJobs=async(mail:string)=>{
           },
         },
       },
+    },orderBy:{
+      createdAt:'desc'
     },
   });
 

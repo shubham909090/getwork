@@ -4,25 +4,22 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Clock, DollarSign, MapPin } from 'lucide-react';
-import { atom, useRecoilState, useRecoilValue } from 'recoil';
+import { atom, useAtom, useAtomValue } from 'jotai'
 import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import { getJobsByCategoryIds, getAvailableJobs } from '@/app/server/serverUtils/jobs';
 import { selectedCategories } from './categoryselector';
 import { Skeleton } from '@/components/ui/skeleton';
-import Link from 'next/link';
 
 
 
-export const pageatom = atom({
-    key:'pageatom',
-    default:1
-})
+
+export const pageatom = atom(1)
 
 
 function Jobcards() {
   // Get the selected categories from Recoil
-  const selectedcat = useRecoilValue(selectedCategories)
-  const [page, setPage] = useRecoilState(pageatom)
+  const selectedcat = useAtomValue(selectedCategories)
+  const [page, setPage] = useAtom(pageatom)
 
   
   // Conditionally set the query function based on selected categories

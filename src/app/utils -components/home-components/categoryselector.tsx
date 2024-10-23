@@ -2,7 +2,7 @@
 
 import { Button } from '@/components/ui/button';
 import React from 'react';
-import { atom, useRecoilState, useSetRecoilState } from 'recoil';
+import { atom, useAtom, useSetAtom } from 'jotai'
 import { useQuery } from '@tanstack/react-query';
 import { getAllCategories } from '@/app/server/serverUtils/cat';
 import { pageatom } from './jobcards';
@@ -11,10 +11,7 @@ import { Skeleton } from '@/components/ui/skeleton';
 
 
 // Atom for selected categories
-export const selectedCategories = atom<number[]>({
-  key: 'selectedCategories',
-  default: [],
-});
+export const selectedCategories = atom<number[]>([])
 
 export function Categoryselector() {
   const { data, isLoading, error } = useQuery({
@@ -24,9 +21,9 @@ export function Categoryselector() {
   });
 
 
-  const [selectedcat, setselectedcat] = useRecoilState(selectedCategories); // Store selected category IDs
+  const [selectedcat, setselectedcat] = useAtom(selectedCategories); // Store selected category IDs
 
-  const setpage = useSetRecoilState(pageatom)
+  const setpage = useSetAtom(pageatom)
   // Handle the click event for toggling button state
   function handleClick(id: number) {
     if (selectedcat.includes(id)) {
